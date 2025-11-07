@@ -1,49 +1,27 @@
 import fs from "fs";
 import path from "path";
-import matter from "gray-matter";
-import ReactMarkdown from "react-markdown";
 import { notFound } from "next/navigation";
+import Markdown from "react-markdown";
 
 const postsDir = path.join(process.cwd(), "posts");
 
-export async function generateStaticParams() {
-  function getAllFiles(dir: string, parentSlug: string[] = []) {
-    const entries = fs.readdirSync(dir, { withFileTypes: true });
-    const files: { slug: string[] }[] = [];
+export default async function PostPage(props: { params: Promise<{ slug?: string[] }> }) {
+  // ✅ Next.js 16에서는 params가 Promise이므로 await으로 풀어야 함
+  const { slug } = await props.params;
 
-    for (const entry of entries) {
-      if (entry.isDirectory()) {
-        files.push(...getAllFiles(path.join(dir, entry.name), [...parentSlug, entry.name]));
-      } else if (entry.name.endsWith(".md")) {
-        files.push({ slug: [...parentSlug, entry.name.replace(/\.md$/, "")] });
-      }
-    }
+  // slug가 없으면 index로 처리
+  const slugArray = slug ?? ["index"];
 
-    return files;
-  }
+  // 예: ["posts", "tips", "go"] → posts/posts/tips/go.md
+  const filePath = path.join(postsDir, ...slugArray) + ".md";
 
-  return getAllFiles(postsDir);
-}
-
-interface PostPageProps {
-  params: Promise<{ slug: string[] }>;
-}
-
-export default async function PostPage({ params }: PostPageProps) {
-  const resolvedParams = await params;
-  const filePath = path.join(postsDir, ...resolvedParams.slug) + ".md";
   if (!fs.existsSync(filePath)) return notFound();
 
-  const file = fs.readFileSync(filePath, "utf-8");
-  const { data, content } = matter(file);
+  const fileContent = fs.readFileSync(filePath, "utf-8");
 
   return (
-    <main className="max-w-3xl mx-auto px-6 py-12">
-      <article className="prose prose-lg dark:prose-invert">
-        <h1>{data.title ?? resolvedParams.slug.join(" / ")}</h1>
-        {data.date && <p className="text-gray-500">{data.date}</p>}
-        <ReactMarkdown>{content}</ReactMarkdown>
-      </article>
-    </main>
+    <article className="prose mx-auto p-6">
+      <Markdown>{fileContent}</Markdown>
+    </article>
   );
 }
