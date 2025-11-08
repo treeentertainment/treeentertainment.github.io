@@ -48,7 +48,7 @@ export default function Sidebar() {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed top-4 right-4 z-50 p-2 bg-neutral-100 hover:bg-neutral-200 border border-neutral-300 rounded-md shadow-md transition-colors"
+          className="fixed top-4 left-4 z-50 p-2 bg-neutral-100 hover:bg-neutral-200 border border-neutral-300 rounded-md shadow-md transition-colors"
           aria-label="Open sidebar"
         >
           <ThreeBarsIcon size={24} />
@@ -56,7 +56,7 @@ export default function Sidebar() {
       )}
 
       {/* Sidebar */}
-      <aside className={`p-4 border-l border-neutral-200 sticky top-0 h-screen w-64 overflow-y-auto bg-neutral-50 transition-transform duration-300 ${isOpen ? 'translate-x-0' : 'translate-x-full'} fixed right-0 z-40`}>
+      <aside className={`p-4 border-r border-neutral-200 fixed top-0 left-0 h-screen w-64 overflow-y-auto bg-neutral-50 transition-transform duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-full'} z-40`}>
         {/* Close button */}
         <button
           onClick={() => setIsOpen(false)}
