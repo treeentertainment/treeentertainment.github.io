@@ -1,7 +1,7 @@
 <h1 align="center">✅️TREE ENTERTAINMENT OFFICIAL WEBSITE✅️</h1>
 
 <p align="center">
-  <img src="./logo500.png" style="width: 30%;" />
+  <img src="./assets/logo500.png" style="width: 30%;" />
 </p>
 
 ## 개인정보 처리 방침
