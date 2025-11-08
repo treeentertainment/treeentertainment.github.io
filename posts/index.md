@@ -15,4 +15,4 @@
 ## 문의
 
 [![Static Badge](https://img.shields.io/badge/M-blue?style=for-the-badge&logo=github)
-](mailto:contact@treeentertainment.tech)
+](./contact)
