@@ -26,12 +26,15 @@ function parseTags(value: unknown): string[] {
 
 export async function GET(
   request: Request,
-  { params }: { params: { tags?: string } }
+  { params }: { params: Promise<{ tags: string }> }
 ) {
   try {
+    // Next.js 16에서 params는 Promise로 변경됨
+    const resolvedParams = await params;
+    
     // 요청에서 패스 파라미터 또는 쿼리 파라미터(tag)를 허용
     const url = new URL(request.url);
-    const rawParam = params?.tags ?? url.searchParams.get("tag") ?? "";
+    const rawParam = resolvedParams.tags ?? url.searchParams.get("tag") ?? "";
 
     // 디코딩 안전하게 처리
     let decodedTag = "";
@@ -42,7 +45,7 @@ export async function GET(
     }
 
     // 디버그 로그(서버 터미널에 찍힙니다)
-    console.debug("GET /api/tags/[tags] - params.tags:", params?.tags, "query.tag:", url.searchParams.get("tag"), "decoded:", decodedTag);
+    console.debug("GET /api/tags/[tags] - params.tags:", resolvedParams.tags, "query.tag:", url.searchParams.get("tag"), "decoded:", decodedTag);
 
     if (!decodedTag) {
       return NextResponse.json({ error: "Tag required. Use /api/tags/<tag> or provide ?tag=<tag>" }, { status: 400 });
