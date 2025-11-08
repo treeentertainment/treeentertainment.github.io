@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { BookIcon, FileDirectoryIcon, TagIcon } from "@primer/octicons-react";
+import { BookIcon, FileDirectoryIcon, TagIcon, ThreeBarsIcon, XIcon } from "@primer/octicons-react";
 
 interface Tag {
   name: string;
@@ -23,6 +23,7 @@ export default function Sidebar() {
   const [tags, setTags] = useState<Tag[]>([]);
   const [rootPosts, setRootPosts] = useState<Post[]>([]);
   const [categoryPosts, setCategoryPosts] = useState<Category[]>([]);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -42,9 +43,31 @@ export default function Sidebar() {
   }, []);
 
   return (
-    <aside className="p-4 border-l border-neutral-200 sticky top-0 h-screen w-64 overflow-y-auto bg-neutral-50">
+    <>
+      {/* Toggle button - visible when sidebar is closed */}
+      {!isOpen && (
+        <button
+          onClick={() => setIsOpen(true)}
+          className="fixed top-4 left-4 z-50 p-2 bg-neutral-100 hover:bg-neutral-200 border border-neutral-300 rounded-md shadow-md transition-colors"
+          aria-label="Open sidebar"
+        >
+          <ThreeBarsIcon size={24} />
+        </button>
+      )}
+
+      {/* Sidebar */}
+      <aside className={`p-4 border-r border-neutral-200 fixed top-0 left-0 h-screen w-64 overflow-y-auto bg-neutral-50 transition-transform duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-full'} z-40`}>
+        {/* Close button */}
+        <button
+          onClick={() => setIsOpen(false)}
+          className="absolute top-2 right-2 p-1 hover:bg-neutral-200 rounded-md transition-colors"
+          aria-label="Close sidebar"
+        >
+          <XIcon size={20} />
+        </button>
+
       {/* All posts */}
-      <h2 className="text-lg font-semibold mb-3 flex items-center gap-2">
+      <h2 className="text-lg font-semibold mb-3 flex items-center gap-2 mt-8">
         <BookIcon size={16} />
         모든 글
       </h2>
@@ -102,5 +125,6 @@ export default function Sidebar() {
         ))}
       </ul>
     </aside>
+    </>
   );
 }

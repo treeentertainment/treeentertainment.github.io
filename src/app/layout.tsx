@@ -19,7 +19,7 @@ export default function RootLayout({
         <Sidebar />
 
         {/* ✅ 메인 콘텐츠 영역 */}
-        <main className="flex-1 p-6 overflow-y-auto">
+        <main className="flex-1 p-6 overflow-y-auto w-full">
           {children}
         </main>
       </body>
