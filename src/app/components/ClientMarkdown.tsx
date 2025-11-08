@@ -1,5 +1,6 @@
 import ReactMarkdown, { Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
 import rehypeHighlight from "rehype-highlight";
 import rehypeExternalLinks from "rehype-external-links";
 import remarkGithubAdmonitions from "@/lib/remarkGithubAdmonitions";
@@ -26,6 +27,7 @@ export default function ClientMarkdown({ children }: { children: string }) {
     <ReactMarkdown
       remarkPlugins={[remarkGfm, remarkGithubAdmonitions]}
       rehypePlugins={[
+        rehypeRaw,
         rehypeHighlight,
         [rehypeExternalLinks, { target: "_blank", rel: ["noopener", "noreferrer"] }]
       ]}
