@@ -5,7 +5,7 @@ import Link from "next/link";
 
 const postsDir = path.join(process.cwd(), "posts");
 
-// 🔍 모든 하위 폴더의 .md 파일 재귀적으로 가져오기
+// Recursively get all .md files from all subdirectories
 function getAllMarkdownFiles(dir: string): string[] {
   const entries = fs.readdirSync(dir, { withFileTypes: true });
   const files = entries.flatMap((entry) => {

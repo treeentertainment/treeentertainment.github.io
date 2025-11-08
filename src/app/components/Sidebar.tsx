@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { BookIcon, FileDirectoryIcon, TagIcon } from "@primer/octicons-react";
 
 interface Tag {
   name: string;
@@ -25,11 +26,11 @@ export default function Sidebar() {
 
   useEffect(() => {
     async function fetchData() {
-      // ✅ 태그
+      // Fetch tags
       const tagRes = await fetch("/api/tags");
       if (tagRes.ok) setTags(await tagRes.json());
 
-      // ✅ 글 목록
+      // Fetch posts
       const postRes = await fetch("/api/posts");
       if (postRes.ok) {
         const data = await postRes.json();
@@ -42,8 +43,11 @@ export default function Sidebar() {
 
   return (
     <aside className="p-4 border-l border-neutral-200 sticky top-0 h-screen w-64 overflow-y-auto bg-neutral-50">
-      {/* ✅ 모든 글 */}
-      <h2 className="text-lg font-semibold mb-3">📰 모든 글</h2>
+      {/* All posts */}
+      <h2 className="text-lg font-semibold mb-3 flex items-center gap-2">
+        <BookIcon size={16} />
+        모든 글
+      </h2>
       <ul className="mb-4 flex flex-col gap-1">
         {rootPosts.map((post) => (
           <li key={post.slug}>
@@ -58,8 +62,9 @@ export default function Sidebar() {
         {categoryPosts.map(({ category, posts }) => (
           <li key={category}>
             <details>
-              <summary className="cursor-pointer font-medium">
-                📂 {category}
+              <summary className="cursor-pointer font-medium flex items-center gap-2">
+                <FileDirectoryIcon size={16} />
+                {category}
               </summary>
               <ul className="ml-4 mt-1 flex flex-col gap-1">
                 {posts.map((post) => (
@@ -78,8 +83,11 @@ export default function Sidebar() {
         ))}
       </ul>
 
-      {/* ✅ 태그 */}
-      <h2 className="text-lg font-semibold mb-3">🏷️ 태그</h2>
+      {/* Tags */}
+      <h2 className="text-lg font-semibold mb-3 flex items-center gap-2">
+        <TagIcon size={16} />
+        태그
+      </h2>
       <ul className="flex flex-col gap-2">
         {tags.map((tag) => (
           <li key={tag.name}>

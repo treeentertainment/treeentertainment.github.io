@@ -2,10 +2,10 @@
 @plugin "@tailwindcss/typography";
 
 /* ==============================
-   📘 GitHub-style Admonitions
+   GitHub-style Admonitions
    ============================== */
 
-/* 🔹 Admonition 스타일 */
+/* Admonition base styles */
 .prose blockquote.admonition {
   margin: 1rem 0;
   border-left: 4px solid #e5e7eb;
@@ -13,10 +13,10 @@
   padding: 0.75rem 1rem;
   border-radius: 0.375rem;
   quotes: none;
-  font-style: normal;  /* 👈 blockquote 기본 italic 완전 제거 */
+  font-style: normal;  /* Remove default blockquote italic */
 }
 
-/* 🔹 제목 */
+/* Admonition title */
 .prose blockquote.admonition > .admonition-title {
   margin: 0 0 0.25rem 0;
   font-weight: 400; /* 600 → normal */
@@ -26,7 +26,7 @@
   gap: 0.25rem;
 }
 
-/* 🔹 본문 스타일: 기울임 해제 */
+/* Admonition body: remove italic */
 .prose blockquote.admonition p {
   font-style: normal;
   font-weight: normal;
@@ -34,39 +34,39 @@
   margin: 0.25rem 0;
 }
 
-/* 🔹 Markdown 문법으로 강조한 경우는 그대로 유지됨 */
+/* Markdown bold syntax is preserved */
 .prose blockquote.admonition strong {
   font-weight: 700;
 }
-/* 제목 안에서는 굵게 해제 */
+/* Remove bold in title */
 .prose blockquote.admonition > .admonition-title strong,
 .prose blockquote.admonition > .admonition-title b {
   font-weight: inherit;
 }
-/* 본문에서만 굵게 유지 */
+/* Keep bold in body */
 .prose blockquote.admonition :not(.admonition-title) strong {
   font-weight: 700;
 }
 
-/* _기울임_ 문법도 정상적으로 작동 */
+/* Markdown italic syntax works normally */
 .prose blockquote.admonition em {
   font-style: italic;
 }
 
-/* 🔹 타입별 색상 */
+/* Type-specific colors */
 .prose blockquote.admonition.note { border-left-color: #3b82f6; background: #eff6ff; }
 .prose blockquote.admonition.tip { border-left-color: #10b981; background: #ecfdf5; }
 .prose blockquote.admonition.important { border-left-color: #8b5cf6; background: #f5f3ff; }
 .prose blockquote.admonition.warning { border-left-color: #f59e0b; background: #fffbeb; }
 .prose blockquote.admonition.caution { border-left-color: #ef4444; background: #fef2f2; }
 
-/* 🔹 코드 wrap */
+/* Code wrapping */
 .prose pre code {
   white-space: pre-wrap;
   word-break: break-word;
 }
 
-/* 🔥 Tailwind Typography의 blockquote 기본 기울임 완전 무력화 */
+/* Completely disable Tailwind Typography's default blockquote italic */
 .prose blockquote,
 .prose blockquote p {
   font-style: normal !important;

@@ -2,14 +2,15 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 import Link from "next/link";
+import { BookIcon, FileIcon, FileDirectoryIcon } from "@primer/octicons-react";
 
 const postsDir = path.join(process.cwd(), "posts");
 
-// ✅ 서버 컴포넌트로만 동작하도록 (use client 없음)
+// Server component only (no "use client")
 export default function AllPostsPage() {
   const entries = fs.readdirSync(postsDir, { withFileTypes: true });
 
-  // 📄 카테고리 없는 글
+  // Posts without categories
   const rootPosts = entries
     .filter((entry) => entry.isFile() && entry.name.endsWith(".md"))
     .map((file) => {
@@ -23,7 +24,7 @@ export default function AllPostsPage() {
       };
     });
 
-  // 📂 카테고리별 글
+  // Posts by category
   const categoryPosts = entries
     .filter((entry) => entry.isDirectory())
     .map((dir) => {
@@ -45,14 +46,20 @@ export default function AllPostsPage() {
       return { category: dir.name, posts };
     });
 
-  // 📜 렌더링
+  // Render
   return (
     <div className="prose mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-4">📰 모든 글</h1>
+      <h1 className="text-2xl font-bold mb-4 flex items-center gap-2">
+        <BookIcon size={24} />
+        모든 글
+      </h1>
 
       {rootPosts.length > 0 && (
         <section className="mb-8">
-          <h2 className="text-lg font-semibold mb-2">📄 카테고리 없는 글</h2>
+          <h2 className="text-lg font-semibold mb-2 flex items-center gap-2">
+            <FileIcon size={16} />
+            카테고리 없는 글
+          </h2>
           <ul className="list-disc pl-6">
             {rootPosts.map((post) => (
               <li key={post.slug}>
@@ -67,7 +74,10 @@ export default function AllPostsPage() {
 
       {categoryPosts.map(({ category, posts }) => (
         <section key={category} className="mb-8">
-          <h2 className="text-lg font-semibold mb-2">📂 {category}</h2>
+          <h2 className="text-lg font-semibold mb-2 flex items-center gap-2">
+            <FileDirectoryIcon size={16} />
+            {category}
+          </h2>
           <ul className="list-disc pl-6">
             {posts.map((post) => (
               <li key={post.slug}>
