@@ -1,9 +1,10 @@
 import "./globals.css";
+import Sidebar from "./components/Sidebar";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "My Blog",
-  description: "Next.js + Markdown + Tailwind Blog",
+  description: "Next.js Markdown Blog",
 };
 
 export default function RootLayout({
@@ -13,8 +14,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko">
-      <body className="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100">
-        <main className="max-w-3xl mx-auto px-6 py-12">{children}</main>
+      <body className="flex min-h-screen bg-white text-neutral-900">
+        {/* ✅ Sidebar 고정 */}
+        <Sidebar />
+
+        {/* ✅ 메인 콘텐츠 영역 */}
+        <main className="flex-1 p-6 overflow-y-auto">
+          {children}
+        </main>
       </body>
     </html>
   );

@@ -1,5 +1,154 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities
+/* ==============================
+   📘 GitHub-style Admonitions
+   ============================== */
+
+/* 🔹 Admonition 스타일 */
+.prose blockquote.admonition {
+  margin: 1rem 0;
+  border-left: 4px solid #e5e7eb;
+  background: #f9fafb;
+  padding: 0.75rem 1rem;
+  border-radius: 0.375rem;
+  quotes: none;
+  font-style: normal;  /* 👈 blockquote 기본 italic 완전 제거 */
+}
+
+/* 🔹 제목 */
+.prose blockquote.admonition > .admonition-title {
+  margin: 0 0 0.25rem 0;
+  font-weight: 400; /* 600 → normal */
+  font-style: normal;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* 🔹 본문 스타일: 기울임 해제 */
+.prose blockquote.admonition p {
+  font-style: normal;
+  font-weight: normal;
+  color: inherit;
+  margin: 0.25rem 0;
+}
+
+/* 🔹 Markdown 문법으로 강조한 경우는 그대로 유지됨 */
+.prose blockquote.admonition strong {
+  font-weight: 700;
+}
+/* 제목 안에서는 굵게 해제 */
+.prose blockquote.admonition > .admonition-title strong,
+.prose blockquote.admonition > .admonition-title b {
+  font-weight: inherit;
+}
+/* 본문에서만 굵게 유지 */
+.prose blockquote.admonition :not(.admonition-title) strong {
+  font-weight: 700;
+}
+
+/* _기울임_ 문법도 정상적으로 작동 */
+.prose blockquote.admonition em {
+  font-style: italic;
+}
+
+/* 🔹 타입별 색상 */
+.prose blockquote.admonition.note { border-left-color: #3b82f6; background: #eff6ff; }
+.prose blockquote.admonition.tip { border-left-color: #10b981; background: #ecfdf5; }
+.prose blockquote.admonition.important { border-left-color: #8b5cf6; background: #f5f3ff; }
+.prose blockquote.admonition.warning { border-left-color: #f59e0b; background: #fffbeb; }
+.prose blockquote.admonition.caution { border-left-color: #ef4444; background: #fef2f2; }
+
+/* 🔹 코드 wrap */
+.prose pre code {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* 🔥 Tailwind Typography의 blockquote 기본 기울임 완전 무력화 */
+.prose blockquote,
+.prose blockquote p {
+  font-style: normal !important;
+}
+
+.prose blockquote.admonition.note > .admonition-title {
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.prose blockquote.admonition.note > .admonition-title { color:#1d4ed8; }
+.prose blockquote.admonition.tip > .admonition-title { color:#047857; }
+.prose blockquote.admonition.important > .admonition-title { color:#6d28d9; }
+.prose blockquote.admonition.warning > .admonition-title { color:#b45309; }
+.prose blockquote.admonition.caution > .admonition-title { color:#b91c1c; }
+
+/* Octicon 공통 */
+.prose blockquote.admonition > .admonition-title::before {
+  content:"";
+  display:inline-block;
+  width:16px;
+  height:16px;
+  margin-right:4px;
+  background: currentColor;
+}
+
+/* NOTE */
+.prose blockquote.admonition.note > .admonition-title::before {
+  -webkit-mask: url("https://raw.githubusercontent.com/primer/octicons/main/icons/info-16.svg") no-repeat center / contain;
+          mask: url("https://raw.githubusercontent.com/primer/octicons/main/icons/info-16.svg") no-repeat center / contain;
+}
+
+/* TIP */
+.prose blockquote.admonition.tip > .admonition-title::before {
+  -webkit-mask: url("https://raw.githubusercontent.com/primer/octicons/main/icons/light-bulb-16.svg") no-repeat center / contain;
+          mask: url("https://raw.githubusercontent.com/primer/octicons/main/icons/light-bulb-16.svg") no-repeat center / contain;
+}
+
+/* IMPORTANT */
+.prose blockquote.admonition.important > .admonition-title::before {
+  -webkit-mask: url("https://raw.githubusercontent.com/primer/octicons/main/icons/alert-16.svg") no-repeat center / contain;
+          mask: url("https://raw.githubusercontent.com/primer/octicons/main/icons/alert-16.svg") no-repeat center / contain;
+}
+
+/* WARNING */
+.prose blockquote.admonition.warning > .admonition-title::before {
+  -webkit-mask: url("https://raw.githubusercontent.com/primer/octicons/main/icons/alert-16.svg") no-repeat center / contain;
+          mask: url("https://raw.githubusercontent.com/primer/octicons/main/icons/alert-16.svg") no-repeat center / contain;
+}
+
+/* CAUTION (대체 아이콘) */
+.prose blockquote.admonition.caution > .admonition-title::before {
+  -webkit-mask: url("https://raw.githubusercontent.com/primer/octicons/main/icons/x-circle-16.svg") no-repeat center / contain;
+          mask: url("https://raw.githubusercontent.com/primer/octicons/main/icons/x-circle-16.svg") no-repeat center / contain;
+}
+
+/* 외부 링크 아이콘 */
+.prose a[target="_blank"]:not(.no-ext-icon) {
+  position: relative;
+  padding-right: 1.05em;
+}
+
+.prose a[target="_blank"]:not(.no-ext-icon)::after {
+  content:"";
+  position: absolute;
+  top: 50%;
+  right: 0;
+  width: 0.85em;
+  height: 0.85em;
+  transform: translateY(-50%);
+  background: currentColor;
+  -webkit-mask: url("https://raw.githubusercontent.com/primer/octicons/main/icons/link-external-16.svg") no-repeat center / contain;
+          mask: url("https://raw.githubusercontent.com/primer/octicons/main/icons/link-external-16.svg") no-repeat center / contain;
+  opacity: .75;
+}
+
+.prose a[target="_blank"]:hover::after {
+  opacity:1;
+}
+
+/* 내부(상대) 링크엔 제거하려면: 도메인 기준 필터 예시 */
+.prose a[href^="/"]::after,
+.prose a[href^="#"]::after {
+  content:none;
+}

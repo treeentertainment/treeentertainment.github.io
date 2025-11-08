@@ -1,2 +1,55 @@
-node_modules
-node_modules
+# Node
+node_modules/
+npm-debug.log*
+yarn.lock
+pnpm-lock.yaml
+package-lock.json
+
+# Next.js
+.next/
+out/
+.vercel/
+
+# Build artifacts
+dist/
+build/
+
+# TypeScript
+*.tsbuildinfo
+
+# Env / secrets
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+logs/
+*.log
+
+# Coverage / test
+coverage/
+.jest/
+
+# IDE / editor
+.vscode/
+.idea/
+*.swp
+
+# OS junk
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# OneDrive temp files
+~$*
+*.tmp
+
+# Misc
+*.bak
+*.orig
+
+# Optional: if you generate highlight caches
+.highlight-cache/

@@ -1,40 +1,56 @@
 import fs from "fs";
 import path from "path";
+import { notFound } from "next/navigation";
 import matter from "gray-matter";
+import ClientMarkdown from "./components/ClientMarkdown";
 import Link from "next/link";
 
 const postsDir = path.join(process.cwd(), "posts");
 
-export default function PostsPage() {
-  const files = fs.readdirSync(postsDir);
-  const posts = files
-    .filter((f) => f.endsWith(".md"))
-    .map((file) => {
-      const filePath = path.join(postsDir, file);
-      const fileContent = fs.readFileSync(filePath, "utf-8");
-      const { data } = matter(fileContent);
-      return {
-        slug: file.replace(/\.md$/, ""),
-        title: data.title || file,
-        date: data.date || "Unknown",
-      };
-    });
+export default async function PostPage(props: { params: Promise<{ slug?: string[] }> }) {
+  const { slug } = await props.params;
+  const slugArray = slug ?? ["index"];
+  const filePath = path.join(postsDir, ...slugArray) + ".md";
+
+  if (!fs.existsSync(filePath)) return notFound();
+
+  const fileContent = fs.readFileSync(filePath, "utf-8");
+  const { data, content } = matter(fileContent); // front matter 분리
 
   return (
-    <div className="space-y-4">
-      <h1 className="text-3xl font-bold mb-6">📚 전체 포스트</h1>
-      <ul className="space-y-2">
-        {posts.map((post) => (
-          <li key={post.slug}>
+    <article className="prose mx-auto p-6">
+      {/* 제목 */}
+      {data?.title && <h1>{data.title}</h1>}
+
+      {/* 날짜 */}
+      {data?.date && (
+        <p className="m-0 text-sm text-neutral-500">
+          {new Date(data.date).toLocaleDateString("ko-KR")}
+        </p>
+      )}
+
+      {/* 설명 */}
+      {data?.description && (
+        <p className="text-neutral-600 italic mt-2">{data.description}</p>
+      )}
+
+      {/* 태그 (클릭 시 /tags/[tag]로 이동) */}
+      {data?.tags && Array.isArray(data.tags) && (
+        <div className="flex flex-wrap gap-2 my-4">
+          {data.tags.map((tag: string) => (
             <Link
-              href={`/posts/${post.slug}`}
-              className="text-blue-600 hover:underline"
+              key={tag}
+              href={`/tags/${encodeURIComponent(tag)}`}
+              className="bg-neutral-200 hover:bg-neutral-300 text-neutral-700 px-2 py-1 rounded-full text-sm transition"
             >
-              {post.title} <span className="text-gray-400 text-sm">({post.date})</span>
+              #{tag}
             </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
+          ))}
+        </div>
+      )}
+
+      {/* 본문 */}
+      <ClientMarkdown>{content}</ClientMarkdown>
+    </article>
   );
 }
