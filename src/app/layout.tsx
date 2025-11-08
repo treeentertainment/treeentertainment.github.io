@@ -3,8 +3,8 @@ import Sidebar from "./components/Sidebar";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "channel101",
-  description: "channel101, personal blog site",
+  title: "TREE ENTERTAINMENT",
+  description: "TREE ENTERTAINMENT OFFICIAL WEBSITE",
 };
 
 export default function RootLayout({
