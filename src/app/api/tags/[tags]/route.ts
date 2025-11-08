@@ -71,7 +71,7 @@ export async function GET(
           title: data.title || "",
           date: data.date || "",
           tags,
-          excerpt: data.excerpt || markdown.slice(0, 200),
+          excerpt: data.description || data.excerpt || markdown.slice(0, 200),
         });
       }
     }
