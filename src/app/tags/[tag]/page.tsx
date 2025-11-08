@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import Link from "next/link";
 
 interface Post {
   slug: string;
@@ -39,19 +40,44 @@ export default function TagPage() {
     }
   }, [tag]);
 
-  if (loading) return <div>로딩 중...</div>;
-  if (error) return <div>에러: {error}</div>;
-  if (posts.length === 0) return <div>포스트가 없습니다.</div>;
+  if (loading) return <div className="max-w-4xl mx-auto p-6">로딩 중...</div>;
+  if (error) return <div className="max-w-4xl mx-auto p-6 text-red-600">에러: {error}</div>;
+  if (posts.length === 0) return <div className="max-w-4xl mx-auto p-6">포스트가 없습니다.</div>;
 
   return (
-    <div>
-      <h1>태그: {decodeURIComponent(tag)}</h1>
-      <div className="posts">
+    <div className="max-w-4xl mx-auto p-6">
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold mb-2">태그: {decodeURIComponent(tag)}</h1>
+        <p className="text-neutral-600">{posts.length}개의 포스트</p>
+      </div>
+
+      <div className="space-y-6">
         {posts.map((post) => (
-          <article key={post.slug}>
-            <h2>{post.title}</h2>
-            <time>{post.date}</time>
-            <p>{post.excerpt}</p>
+          <article key={post.slug} className="border-b border-neutral-200 pb-6 last:border-b-0">
+            <Link href={`/${post.slug}`} className="group">
+              <h2 className="text-2xl font-semibold mb-2 text-neutral-900 group-hover:text-blue-600 transition">
+                {post.title}
+              </h2>
+            </Link>
+            <time className="text-sm text-neutral-500 block mb-3">
+              {new Date(post.date).toLocaleDateString("ko-KR", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </time>
+            <p className="text-neutral-700 mb-3 line-clamp-3">{post.excerpt}</p>
+            <div className="flex flex-wrap gap-2">
+              {post.tags.map((tagName) => (
+                <Link
+                  key={tagName}
+                  href={`/tags/${encodeURIComponent(tagName)}`}
+                  className="bg-neutral-200 hover:bg-neutral-300 text-neutral-700 px-2 py-1 rounded-full text-sm transition"
+                >
+                  #{tagName}
+                </Link>
+              ))}
+            </div>
           </article>
         ))}
       </div>
