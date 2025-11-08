@@ -6,11 +6,11 @@
 
 ## 개인정보 처리 방침
 
->[privacy](./privacy.md)
+>[privacy](./privacy)
 
 ## 서비스 약관
 
->[terms](./terms.md)
+>[terms](./terms)
 
 ## 문의
 
