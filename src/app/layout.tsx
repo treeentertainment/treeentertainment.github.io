@@ -3,8 +3,8 @@ import Sidebar from "./components/Sidebar";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "My Blog",
-  description: "Next.js Markdown Blog",
+  title: "channel101",
+  description: "channel101, personal blog site",
 };
 
 export default function RootLayout({
