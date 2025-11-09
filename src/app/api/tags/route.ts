@@ -29,15 +29,6 @@ function parseTags(value: unknown): string[] {
     return [];
 }
 
-function toTitleCase(str: string) {
-    return str
-        .trim()
-        .replace(/\s+/g, " ")
-        .split(" ")
-        .map((w) => (w ? w[0].toUpperCase() + w.slice(1).toLowerCase() : ""))
-        .join(" ");
-}
-
 function slugify(key: string) {
     return key
         .trim()
@@ -62,8 +53,8 @@ export async function GET() {
             const key = raw.toLowerCase(); // 대소문자 무시하고 집계
             tagCount[key] = (tagCount[key] || 0) + 1;
             if (!displayName[key]) {
-                // 첫 등장 형태를 보기 좋게 Title Case로 저장
-                displayName[key] = toTitleCase(raw);
+                // 첫 등장 형태를 그대로 저장
+                displayName[key] = raw;
             }
         }
     }
