@@ -1,8 +1,8 @@
 ---
-title: "개인정보처리방침 | Privacy Policy"
+title: "개인정보처리방침"
 date: "2025-08-09"
-description: "개인정보처리방침 | Privacy Policy"
-tags: ["privacy", "treeentertainment", "terms"]
+description: "개인정보처리방침"
+tags: ["privacy", "treeentertainment"]
 ---
 
 # 개인정보처리방침
