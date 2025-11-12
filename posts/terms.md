@@ -1,8 +1,8 @@
 ---
-title: "서비스 이용약관 | Terms of Use"
+title: "서비스 이용약관"
 date: "2025-08-28"
-description: "서비스 이용약관 | Terms of Use"
-tags: ["privacy", "treeentertainment", "terms"]
+description: "서비스 이용약관"
+tags: ["terms", "treeentertainment"]
 ---
 
 # TREE ENTERTAINMENT 서비스 이용약관
