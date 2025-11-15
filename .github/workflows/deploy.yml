@@ -1,0 +1,56 @@
+name: Deploy Next.js site to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main        # 배포 기준 브랜치 (필요시 변경)
+
+  workflow_dispatch: # 수동 실행도 가능하게
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Next.js app
+        run: npm run build
+
+      # Next.js 13+ (app router) 기준으로 .next 디렉토리를 Pages에 올립니다.
+      # GitHub Pages는 정적 파일만 제공하지만 Next.js 16은
+      # 프리렌더된 출력물도 함께 포함하고 제공합니다.
+      - name: Upload build artifacts
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .next
+
+  deploy:
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    name: Deploy to GitHub Pages
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
