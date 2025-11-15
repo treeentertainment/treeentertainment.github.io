@@ -36,6 +36,7 @@ jobs:
       - name: Build and export Next.js app
         run: |
           npm run build
+          npm run export
 
       # GitHub Pages에 올릴 정적 파일은 out 디렉터리
       - name: Upload build artifacts
