@@ -3,9 +3,9 @@ name: Deploy Next.js site to GitHub Pages
 on:
   push:
     branches:
-      - main        # 배포 기준 브랜치 (필요시 변경)
+      - main
 
-  workflow_dispatch: # 수동 실행도 가능하게
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -32,16 +32,17 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build Next.js app
-        run: npm run build
+      # 빌드 + 정적 export
+      - name: Build and export Next.js app
+        run: |
+          npm run build
+          npm run export
 
-      # Next.js 13+ (app router) 기준으로 .next 디렉토리를 Pages에 올립니다.
-      # GitHub Pages는 정적 파일만 제공하지만 Next.js 16은
-      # 프리렌더된 출력물도 함께 포함하고 제공합니다.
+      # GitHub Pages에 올릴 정적 파일은 out 디렉터리
       - name: Upload build artifacts
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .next
+          path: out
 
   deploy:
     needs: build
