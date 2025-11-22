@@ -4,7 +4,14 @@ import matter from "gray-matter";
 import Link from "next/link";
 import { BookIcon, FileIcon, FileDirectoryIcon } from "@primer/octicons-react";
 
+
 const postsDir = path.join(process.cwd(), "posts");
+
+// Sanitize a slug or category name for safe usage in URLs/UI.
+function sanitizeSlug(str: string): string {
+  // Allow only alphanumerics, dash, underscore, and forward-slash for paths.
+  return str.replace(/[^a-zA-Z0-9\-_\/]/g, "");
+}
 
 // Server component only (no "use client")
 export default function AllPostsPage() {
@@ -19,8 +26,8 @@ export default function AllPostsPage() {
       const { data } = matter(content);
 
       return {
-        title: data.title || file.name.replace(/\.md$/, ""),
-        slug: file.name.replace(/\.md$/, ""),
+        title: data.title || sanitizeSlug(file.name.replace(/\.md$/, "")),
+        slug: sanitizeSlug(file.name.replace(/\.md$/, "")),
       };
     });
 
@@ -38,12 +45,12 @@ export default function AllPostsPage() {
         const { data } = matter(content);
 
         return {
-          title: data.title || f.replace(/\.md$/, ""),
-          slug: `${dir.name}/${f.replace(/\.md$/, "")}`,
+          title: data.title || sanitizeSlug(f.replace(/\.md$/, "")),
+          slug: `${sanitizeSlug(dir.name)}/${sanitizeSlug(f.replace(/\.md$/, ""))}`,
         };
       });
 
-      return { category: dir.name, posts };
+      return { category: sanitizeSlug(dir.name), posts };
     });
 
   // Render
