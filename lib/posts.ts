@@ -4,6 +4,8 @@ import matter from "gray-matter";
 
 const postsDirectory = path.join(process.cwd(), "posts");
 
+export const EXCERPT_LENGTH = 200;
+
 export function getAllPostFiles(dir = postsDirectory): string[] {
   const files = fs.readdirSync(dir);
   const allFiles: string[] = [];
@@ -20,13 +22,21 @@ export function getAllPostFiles(dir = postsDirectory): string[] {
   return allFiles;
 }
 
+export function getSlugFromFilePath(filePath: string): string {
+  return filePath
+    .replace(postsDirectory + "/", "")
+    .replace(/\.md$/, "")
+    .replace(/\\/g, "/")
+    .replace(/^\/+/, "");
+}
+
 export function getAllPosts() {
   const filePaths = getAllPostFiles();
 
   return filePaths.map((filePath) => {
     const fileContents = fs.readFileSync(filePath, "utf8");
     const { data, content } = matter(fileContents);
-    const slug = filePath.replace(postsDirectory + "/", "").replace(/\.md$/, "");
+    const slug = getSlugFromFilePath(filePath);
     return { slug, frontMatter: data, content };
   });
 }

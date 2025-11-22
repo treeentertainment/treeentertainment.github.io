@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
+import { getSlugFromFilePath, EXCERPT_LENGTH } from "@lib/posts";
 
 const postsDirectory = path.join(process.cwd(), "posts");
 
@@ -68,17 +69,13 @@ export function getPostsByTag(tag: string) {
 
     // 태그 매칭 (대소문자 구분 없이)
     if (tags.some((t) => t.toLowerCase() === tag.toLowerCase())) {
-      const slug = file
-        .replace(postsDirectory, "")
-        .replace(/\.md$/, "")
-        .replace(/\\/g, "/")
-        .replace(/^\/+/, "");
+      const slug = getSlugFromFilePath(file);
 
       posts.push({
         slug,
         title: data.title || "",
         date: data.date || "",
-        description: data.description || content.slice(0, 200),
+        description: data.description || content.slice(0, EXCERPT_LENGTH),
         tags,
       });
     }

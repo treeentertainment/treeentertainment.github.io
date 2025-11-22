@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import matter from "gray-matter";
 import ClientMarkdown from "../components/ClientMarkdown";
 import Link from "next/link";
-import { getAllPosts } from "../../../lib/posts";
+import { getAllPosts } from "@lib/posts";
 
 const postsDir = path.join(process.cwd(), "posts");
 
