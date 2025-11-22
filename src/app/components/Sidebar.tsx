@@ -5,7 +5,7 @@ import { getRootPosts, getCategoryPosts } from "@lib/posts";
 import SidebarToggle from "./SidebarToggle";
 
 export default function Sidebar() {
-  // 빌드 타임에 정적 데이터 로드
+  // Load static data at build time
   const tags = getAllTags();
   const rootPosts = getRootPosts();
   const categoryPosts = getCategoryPosts();
