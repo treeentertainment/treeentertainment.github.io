@@ -4,8 +4,17 @@ import { notFound } from "next/navigation";
 import matter from "gray-matter";
 import ClientMarkdown from "../components/ClientMarkdown";
 import Link from "next/link";
+import { getAllPosts } from "@lib/posts";
 
 const postsDir = path.join(process.cwd(), "posts");
+
+// generateStaticParams로 빌드 타임에 모든 포스트 페이지 생성
+export function generateStaticParams() {
+  const posts = getAllPosts();
+  return posts.map((post) => ({
+    slug: post.slug.split("/"),
+  }));
+}
 
 export default async function PostPage(props: { params: Promise<{ slug?: string[] }> }) {
   const { slug } = await props.params;
