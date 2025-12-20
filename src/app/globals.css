@@ -7,7 +7,7 @@
 
 /* Admonition base styles */
 .prose blockquote.admonition {
-  margin:  1rem 0;
+  margin: 1rem 0;
   border-left: 4px solid #e5e7eb;
   background: #f9fafb;
   padding: 0.75rem 1rem;
@@ -18,7 +18,7 @@
 
 /* Admonition title */
 .prose blockquote.admonition > .admonition-title {
-  margin:  0 0 0.25rem 0;
+  margin: 0 0 0.25rem 0;
   font-weight: 400; /* 600 → normal */
   font-style: normal;
   display: flex;
@@ -89,19 +89,19 @@
   font-weight: 600;
 }
 
-.prose blockquote.admonition.note > .admonition-title { color:#1d4ed8; }
-.prose blockquote.admonition.tip > .admonition-title { color:#047857; }
-.prose blockquote.admonition.important > .admonition-title { color:#6d28d9; }
-.prose blockquote.admonition.warning > .admonition-title { color:#b45309; }
-.prose blockquote.admonition.caution > .admonition-title { color:#b91c1c; }
+.prose blockquote.admonition.note > .admonition-title { color: #1d4ed8; }
+.prose blockquote.admonition.tip > .admonition-title { color: #047857; }
+.prose blockquote.admonition.important > .admonition-title { color: #6d28d9; }
+.prose blockquote.admonition.warning > .admonition-title { color: #b45309; }
+.prose blockquote.admonition.caution > .admonition-title { color: #b91c1c; }
 
 /* Octicon 공통 */
 .prose blockquote.admonition > .admonition-title::before {
-  content:"";
+  content: "";
   display: inline-block;
   width: 16px;
-  height:16px;
-  margin-right:4px;
+  height: 16px;
+  margin-right: 4px;
   background: currentColor;
 }
 
@@ -142,10 +142,10 @@
 }
 
 .prose a[target="_blank"]:not(.no-ext-icon)::after {
-  content:"";
+  content: "";
   position: absolute;
   top: 50%;
-  right:  0;
+  right: 0;
   width: 0.85em;
   height: 0.85em;
   transform: translateY(-50%);
@@ -156,11 +156,11 @@
 }
 
 .prose a[target="_blank"]:hover::after {
-  opacity:1;
+  opacity: 1;
 }
 
 /* 내부(상대) 링크엔 제거하려면: 도메인 기준 필터 예시 */
 .prose a[href^="/"]::after,
 .prose a[href^="#"]::after {
-  content:none;
+  content: none;
 }
