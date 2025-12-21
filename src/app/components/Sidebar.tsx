@@ -21,7 +21,7 @@ export default function Sidebar() {
         {rootPosts.map((post) => (
           <li key={post.slug}>
             <Link
-              href={`/${encodeURIComponent(post.slug)}`}
+              href={`/${post.slug}`}
               className="text-neutral-700 hover:underline"
             >
               {post.title}
@@ -39,7 +39,7 @@ export default function Sidebar() {
                 {posts.map((post) => (
                   <li key={post.slug}>
                     <Link
-                      href={`/${encodeURIComponent(post.slug)}`}
+                      href={`/${post.slug}`}
                       className="text-neutral-700 hover:underline"
                     >
                       {post.title}
