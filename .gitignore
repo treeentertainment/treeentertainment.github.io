@@ -53,3 +53,6 @@ Desktop.ini
 
 # Optional: if you generate highlight caches
 .highlight-cache/
+
+# Auto-generated from posts directory
+public/posts/
