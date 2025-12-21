@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "copy-assets": "node scripts/copy-post-assets.js",
+    "copy-assets": "node scripts/copy-post-assets.mjs",
     "dev": "npm run copy-assets && next dev",
     "build": "npm run copy-assets && next build",
     "start": "next start",

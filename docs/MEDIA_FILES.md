@@ -65,7 +65,7 @@ npm run build
 
 ## How It Works
 
-1. The `scripts/copy-post-assets.js` script scans the `/posts` directory
+1. The `scripts/copy-post-assets.mjs` script scans the `/posts` directory
 2. It finds all media files (non-.md files with supported extensions)
 3. It copies them to `/public/posts/` maintaining the directory structure
 4. Next.js includes them in the static export to `/out/posts/`
