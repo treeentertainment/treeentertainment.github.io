@@ -6,6 +6,13 @@ const postsDirectory = path.join(process.cwd(), "posts");
 
 export const EXCERPT_LENGTH = 200;
 
+function sanitizeSlug(slug: string): string {
+  // Allow only URL-safe characters in slugs (alphanumerics, dash, underscore, slash)
+  // and remove any leading slashes to keep the slug relative.
+  const cleaned = slug.replace(/[^a-zA-Z0-9/_-]/g, "").replace(/^\/+/, "");
+  return cleaned;
+}
+
 export function getAllPostFiles(dir = postsDirectory): string[] {
   const files = fs.readdirSync(dir);
   const allFiles: string[] = [];
@@ -23,11 +30,12 @@ export function getAllPostFiles(dir = postsDirectory): string[] {
 }
 
 export function getSlugFromFilePath(filePath: string): string {
-  return filePath
+  const rawSlug = filePath
     .replace(postsDirectory + "/", "")
     .replace(/\.md$/, "")
     .replace(/\\/g, "/")
     .replace(/^\/+/, "");
+  return sanitizeSlug(rawSlug);
 }
 
 export function getAllPosts() {
