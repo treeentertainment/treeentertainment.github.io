@@ -31,7 +31,7 @@
     "@types/node": "^25",
     "@types/react": "^19.2.10",
     "@types/react-dom": "^19",
-    "autoprefixer": "^10.4.23",
+    "autoprefixer": "^10.4.24",
     "babel-plugin-react-compiler": "1.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
