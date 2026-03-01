@@ -12,6 +12,6 @@
 <table align="center">
   <tr>
     <th>URL</th>
-    <th><a href="treeentertainment.github.io">treeentertainment.github.io</a></th>
+    <th><a href="https://treeentertainment.github.io">treeentertainment.github.io</a></th>
   </tr>
 </table>
