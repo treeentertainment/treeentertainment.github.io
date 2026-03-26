@@ -39,7 +39,7 @@
     "postcss": "^8.5.8",
     "remark-gfm": "^4.0.1",
     "tailwindcss": "^4.2.2",
-    "typescript": "^5",
+    "typescript": "^6",
     "unist-util-visit": "^5.1.0"
   }
 }
