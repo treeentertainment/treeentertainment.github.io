@@ -34,7 +34,7 @@
     "autoprefixer": "^10.5.0",
     "babel-plugin-react-compiler": "1.0.0",
     "eslint": "^10",
-    "eslint-config-next": "16.2.3",
+    "eslint-config-next": "16.2.4",
     "gray-matter": "^4.0.3",
     "postcss": "^8.5.9",
     "remark-gfm": "^4.0.1",
