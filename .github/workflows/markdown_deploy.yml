@@ -56,7 +56,7 @@ jobs:
 
           mv *.html public/ 2>/dev/null || true
 
-          find public -type f -name "*.html" -exec sed -i 's/href="\([^":]*\)\.md\([^"]*\)"/href="\1.html\2"/g' {} +
+          find public -type f -name "*.html" -exec sed -i 's/href="\([^":]*\)\.md\([^"]*\)"/href="\1\2"/g' {} +
 
       - name: Setup Pages
         uses: actions/configure-pages@v6
