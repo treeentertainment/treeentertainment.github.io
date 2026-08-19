@@ -13,7 +13,7 @@
   <table>
     <tr>
       <td>📧 Email</td>
-      <td><a href="mailto:treeentertainment@nate.com">treeentertainment@nate.com</a></td>
+      <td><a href="mailto:treeentertainment.korea@gmail.com">treeentertainment.korea@gmail.com</a></td>
     </tr>
     <tr>
       <td>✨ Website</td>
