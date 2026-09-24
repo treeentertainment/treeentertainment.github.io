@@ -1,0 +1,9 @@
+site_name: TREE ENTERTAINMENT
+docs_dir: 'src'
+
+theme:
+  name: lux
+  include_sidebar: false
+
+extra_css:
+  - assets/stylesheets/extra.css

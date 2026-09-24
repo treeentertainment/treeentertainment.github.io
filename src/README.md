@@ -1,0 +1,38 @@
+---
+title: Home
+---
+
+<style>
+.bs-sidebar,
+.col-md-3 {
+  display: none !important;
+}
+
+.col-md-9 {
+  display: grid !important;
+  justify-content: center !important;
+  flex: none !important;
+  max-width: 100% !important;
+  text-align: center !important;
+}
+</style>
+
+<h1 align="center">TREE ENTERTAINMENT</h1>
+
+<p align="center">
+ <a href="https://github.com/treeentertainment">
+  <img src="img/treeentertainment.png"
+    alt="TREE ENTERTAINMENT LOGO"
+    width="200"
+  />
+ </a>
+</p>
+
+<p align="center">
+<a href="./contact"><img alt="contact page link" src="https://img.shields.io/badge/Page-contact-green?style=for-the-badge&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPCEtLQp0YWdzOiBbem9vbS1maWxsZWRdCmNhdGVnb3J5OiBUZXh0CnZlcnNpb246ICIxLjAiCnVuaWNvZGU6ICJlYWRlIgotLT4KPHN2ZwogIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICB3aWR0aD0iMTI4IgogIGhlaWdodD0iMTI4IgogIHZpZXdCb3g9IjAgMCAyNCAyNCIKICBmaWxsPSJub25lIgogIHN0cm9rZT0iI2ZmZmZmZiIKICBzdHJva2Utd2lkdGg9IjMiCiAgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIgogIHN0cm9rZS1saW5lam9pbj0icm91bmQiCj4KICA8cGF0aCBkPSJNOSAxNWw2IC02IiAvPgogIDxwYXRoIGQ9Ik0xMSA2bC40NjMgLS41MzZhNSA1IDAgMCAxIDcuMDcxIDcuMDcybC0uNTM0IC40NjQiIC8%2BCiAgPHBhdGggZD0iTTEzIDE4bC0uMzk3IC41MzRhNS4wNjggNS4wNjggMCAwIDEgLTcuMTI3IDBhNC45NzIgNC45NzIgMCAwIDEgMCAtNy4wNzFsLjUyNCAtLjQ2MyIgLz4KPC9zdmc%2BCg%3D%3D&logoColor=white"></a>
+</p>
+
+<p align="center">
+<a href="./privacy"><img alt="privacy policy page link" src="https://img.shields.io/badge/Page-privacy_policy-informational?style=for-the-badge&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPCEtLQp0YWdzOiBbem9vbS1maWxsZWRdCmNhdGVnb3J5OiBUZXh0CnZlcnNpb246ICIxLjAiCnVuaWNvZGU6ICJlYWRlIgotLT4KPHN2ZwogIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICB3aWR0aD0iMTI4IgogIGhlaWdodD0iMTI4IgogIHZpZXdCb3g9IjAgMCAyNCAyNCIKICBmaWxsPSJub25lIgogIHN0cm9rZT0iI2ZmZmZmZiIKICBzdHJva2Utd2lkdGg9IjMiCiAgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIgogIHN0cm9rZS1saW5lam9pbj0icm91bmQiCj4KICA8cGF0aCBkPSJNOSAxNWw2IC02IiAvPgogIDxwYXRoIGQ9Ik0xMSA2bC40NjMgLS41MzZhNSA1IDAgMCAxIDcuMDcxIDcuMDcybC0uNTM0IC40NjQiIC8%2BCiAgPHBhdGggZD0iTTEzIDE4bC0uMzk3IC41MzRhNS4wNjggNS4wNjggMCAwIDEgLTcuMTI3IDBhNC45NzIgNC45NzIgMCAwIDEgMCAtNy4wNzFsLjUyNCAtLjQ2MyIgLz4KPC9zdmc%2BCg%3D%3D&logoColor=white"></a>
+<a href="./terms"><img alt="terms and conditions page link" src="https://img.shields.io/badge/Page-terms_and_conditions-informational?style=for-the-badge&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPCEtLQp0YWdzOiBbem9vbS1maWxsZWRdCmNhdGVnb3J5OiBUZXh0CnZlcnNpb246ICIxLjAiCnVuaWNvZGU6ICJlYWRlIgotLT4KPHN2ZwogIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICB3aWR0aD0iMTI4IgogIGhlaWdodD0iMTI4IgogIHZpZXdCb3g9IjAgMCAyNCAyNCIKICBmaWxsPSJub25lIgogIHN0cm9rZT0iI2ZmZmZmZiIKICBzdHJva2Utd2lkdGg9IjMiCiAgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIgogIHN0cm9rZS1saW5lam9pbj0icm91bmQiCj4KICA8cGF0aCBkPSJNOSAxNWw2IC02IiAvPgogIDxwYXRoIGQ9Ik0xMSA2bC40NjMgLS41MzZhNSA1IDAgMCAxIDcuMDcxIDcuMDcybC0uNTM0IC40NjQiIC8%2BCiAgPHBhdGggZD0iTTEzIDE4bC0uMzk3IC41MzRhNS4wNjggNS4wNjggMCAwIDEgLTcuMTI3IDBhNC45NzIgNC45NzIgMCAwIDEgMCAtNy4wNzFsLjUyNCAtLjQ2MyIgLz4KPC9zdmc%2BCg%3D%3D&logoColor=white"></a>
+</p>

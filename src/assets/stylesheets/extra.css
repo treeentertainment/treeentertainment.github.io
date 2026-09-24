@@ -1,0 +1,26 @@
+.nav-link[rel="next"] {
+  display: none;
+}
+
+.nav-link[rel="prev"] {
+  display: none;
+}
+
+#mkdocs-search-form,
+#mkdocs_search_modal,
+.modal-backdrop {
+  display: none !important;
+}
+
+#navbar-collapse > ul.nav.navbar-nav.ms-md-auto {
+  display: none !important;
+}
+
+body {
+  color: black !important;
+  font-weight: 400;
+}
+
+strong {
+  font-weight: 800 !important;
+}

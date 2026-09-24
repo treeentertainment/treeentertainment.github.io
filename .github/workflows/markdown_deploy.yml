@@ -1,9 +1,6 @@
-name: Deploy with ghmd-js
+name: Deploy MkDocs
 
 on:
-  pull_request:
-    branches:
-      - main
   push:
     branches:
       - main
@@ -16,69 +13,77 @@ permissions:
 
 concurrency:
   group: "pages"
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
-  build-and-deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v7
+      - name: Set up Python
+        uses: actions/setup-python@v7
         with:
-          node-version: 26
+          python-version: '3.x'
 
-      - name: Build HTML using ghmd-js with .ghmdignore
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install dependencies
         run: |
-          mkdir -p public
+          python -m pip install --upgrade pip
+          pip install mkdocs mkdocs-landing
 
-          FIND_EXCLUDES=(-not -path "./node_modules/*" -not -path "./.github/*" -not -name "README.md")
+      - name: Build MkDocs Site
+        run: mkdocs build
 
-          if [ -f .ghmdignore ]; then
-            while IFS= read -r line || [ -n "$line" ]; do
-              [[ -z "$line" || "$line" =~ ^# ]] && continue
-              
-              FIND_EXCLUDES+=(-not -path "./$line*" -not -name "$line")
-            done < .ghmdignore
-          fi
+      - name: Upload site artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: mkdocs-build
+          path: ./site
+          retention-days: 1
 
-          find . -type f -name "*.md" "${FIND_EXCLUDES[@]}" -exec npx ghmd-js {} --embed-css \;
-
-          if [ -f README.md ]; then
-            npx ghmd-js README.md --embed-css
-            mv README.html public/index.html
-          fi
-
-          mv *.html public/ 2>/dev/null || true
-
-          find public -type f -name "*.html" -exec sed -i 's/href="\([^":]*\)\.md\([^"]*\)"/href="\1\2"/g' {} +
-
-          mv favicon.ico public/ 2>/dev/null || true
+  deploy-github-pages:
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: mkdocs-build
+          path: ./site
 
       - name: Setup Pages
         uses: actions/configure-pages@v6
 
-      - name: Upload artifact
+      - name: Upload Artifact
         uses: actions/upload-pages-artifact@v5
         with:
-          path: 'public'
+          path: './site'
 
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
 
+  deploy-cloudflare-pages:
+    needs: build
+    environment:
+      name: cloudflare-pages
+      url: ${{ steps.cf_deployment.outputs.deployment-url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: mkdocs-build
+          path: ./site
+
       - name: Deploy to Cloudflare Pages
-        uses: cloudflare/wrangler-action@v3
+        id: cf_deployment
+        uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy public --project-name=treeentertainment
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          command: pages deploy ./site --project-name=treeentertainment
