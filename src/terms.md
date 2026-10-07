@@ -1,12 +1,10 @@
 ---
 title: Terms & Conditions
+toc: false
 ---
 
-<style>
-a:not(.nav-link) {
-  color: blue;
-}
-</style>
+> [!WARNING]
+> 서비스 이용약관 개정 중 입니다. 서비스 오픈 전 개정 사항을 전체 공지 할 예정 입니다.
 
 # TREE ENTERTAINMENT 서비스 이용약관
 

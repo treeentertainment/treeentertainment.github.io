@@ -2,25 +2,6 @@
 title: Contact
 ---
 
-<style>
-.bs-sidebar,
-.col-md-3 {
-  display: none !important;
-}
-
-.col-md-9 {
-  display: grid !important;
-  justify-content: center !important;
-  flex: none !important;
-  max-width: 100% !important;
-  text-align: center !important;
-}
-
-a:not(.nav-link) {
-  color: blue;
-}
-</style>
-
 <h1>TREE ENTERTAINMENT</h1>
 
  <a href="https://github.com/treeentertainment">

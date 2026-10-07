@@ -1,9 +1,95 @@
 site_name: TREE ENTERTAINMENT
-docs_dir: 'src'
+docs_dir: "src"
+repo_url: https://github.com/treeentertainment
 
 theme:
-  name: lux
-  include_sidebar: false
+  name: void
+  favicon: img/favicon.ico
+  logo: img/treeentertainment.png
+  language: en
+  direction: ltr
+  palette:
+    - scheme: slate
+      primary: black
+      accent: red
+      toggle:
+        name: Switch to light mode
+    - scheme: default
+      primary: white
+      accent: red
+      toggle:
+        name: Switch to dark mode
+  font:
+    text: Space Grotesk
+    code: Space Mono
+  features:
+    - navigation.sections
+    - navigation.top
+    - search.suggest
+    - search.highlight
+  void:
+    notes: false
+    glass: none
+    dot_matrix: false
+    animation: reduced
+    border: none
+    content:
+      typography:
+        image_lightbox: true
+    components:
+      announcement_bar:
+        show: true
+      code:
+        show_copy_button: false
+      content:
+        show: true
+        show_back_to_top: true
+        show_progress_bar: true
+      cookie_consent:
+        show: false
+      feedback:
+        show: false
+      footer:
+        show: false
+      repo_popover:
+        show: false
+      header:
+        show_page_title: false
+    timer:
+      enabled: false
+      toc:
+        show: false
+    action_cluster:
+      enabled: false
 
-extra_css:
-  - assets/stylesheets/extra.css
+    announcement_bar:
+      dismissable: false
+      enabled: false
+      position: "top"
+      show: true
+      text: ""
+
+    header:
+      right:
+        - palette_toggle           
+        - search                   
+        - type: button          
+          label: ""
+          url: "https://github.com/treeentertainment"
+          style: "secondary"         
+          icon: "github"
+          new_tab: true
+      left:
+        show_page_title: true       # Current page title on the left (default true)
+        show_hamburger: true        # Mobile drawer toggle (default true)
+
+plugins:
+  - search
+  - void:
+      border: "none"
+  - gh-admonitions
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
