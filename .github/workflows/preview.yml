@@ -94,21 +94,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Delete Cloudflare Pages Deployments
-        uses: cloudflare/wrangler-action@v4
         env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           BRANCH_NAME: pr-${{ github.event.pull_request.number }}
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          preCommands: |
-            echo "Fetching deployments for branch: $BRANCH_NAME..."
-            IDS=$(npx wrangler pages deployment list --project-name treeentertainment --json | jq -r ".[] | select(.Branch == \"$BRANCH_NAME\") | .Id")
-            if [ -z "$IDS" ]; then
-              echo "No deployments found for branch $BRANCH_NAME. Nothing to clean up."
-            else
-              for ID in $IDS; do
-                echo "Deleting deployment ID: $ID"
-                npx wrangler pages deployment delete "$ID" --project-name treeentertainment --force
-              done
-            fi
-          command: version
+        run: |
+          echo "Fetching deployments for branch: $BRANCH_NAME..."
+          IDS=$(npx --yes wrangler pages deployment list --project-name treeentertainment --json | jq -r ".[] | select(.Branch == \"$BRANCH_NAME\") | .Id")
+
+          if [ -z "$IDS" ]; then
+            echo "No deployments found for branch $BRANCH_NAME. Nothing to clean up."
+          else
+            for ID in $IDS; do
+              echo "Deleting deployment ID: $ID"
+              npx --yes wrangler pages deployment delete "$ID" --project-name treeentertainment --force
+            done
+          fi
