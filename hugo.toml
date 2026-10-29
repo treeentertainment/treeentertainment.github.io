@@ -133,8 +133,8 @@ endLevel = 3
 ordered = true
 startLevel = 2
 
-[security]
 enableInlineShortcodes = true
+[security]
 [[server.headers]]
 for = "/**"
 [server.headers.values]
