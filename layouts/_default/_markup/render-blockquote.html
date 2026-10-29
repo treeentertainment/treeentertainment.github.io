@@ -1,0 +1,109 @@
+<style>
+  .markdown-alert {
+    padding: 10px 1rem;
+    margin: 1rem 0;
+    border-radius: 0px !important;
+    border-left: 4px solid;
+  }
+
+  .markdown-alert-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+  }
+
+  .markdown-alert-title::before {
+    content: "";
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+    background-color: var(--alert-color);
+    mask-image: var(--alert-icon, none);
+    mask-size: 100%;
+    mask-repeat: no-repeat;
+    mask-position: center;
+  }
+
+  .markdown-alert-note {
+    --alert-color: #0969da;
+    --alert-icon: url("/icons/note.svg");
+    border-color: #0969da;
+    background: #0969da08;
+  }
+
+  .markdown-alert-note .markdown-alert-title {
+    color: #0969da;
+  }
+
+  .markdown-alert-tip {
+    --alert-color: #1a7f37;
+    --alert-icon: url("/icons/tip.svg");
+    border-color: #1a7f37;
+    background: #0969da08;
+  }
+
+  .markdown-alert-tip .markdown-alert-title {
+    color: #1a7f37;
+  }
+
+  .markdown-alert-important {
+    --alert-color: #8250df;
+    --alert-icon: url("/icons/important.svg");
+    border-color: #8250df;
+    background: #0969da08;
+  }
+
+  .markdown-alert-important .markdown-alert-title {
+    color: #8250df;
+  }
+
+  .markdown-alert-warning {
+    --alert-color: #9a6700;
+    --alert-icon: url("/icons/warning.svg");
+    border-color: #9a6700;
+    background: #0969da08;
+  }
+
+  .markdown-alert-warning .markdown-alert-title {
+    color: #9a6700;
+  }
+
+  .markdown-alert-caution {
+    --alert-color: #cf222e;
+    --alert-icon: url("/icons/caution.svg");
+    border-color: #cf222e;
+    background: #0969da08;
+  }
+
+  .markdown-alert-caution .markdown-alert-title {
+    color: #cf222e;
+  }
+
+  blockquote p:first-of-type::before {
+    content: none;
+  }
+  blockquote p:last-of-type::after {
+    content: none;
+  }
+
+  blockquote,
+  blockquote p,
+  .markdown-alert {
+    font-style: normal !important;
+  }
+</style>
+
+{{ if eq .Type "alert" }}
+
+  <div class="markdown-alert markdown-alert-{{ .AlertType }}">
+    <p class="markdown-alert-title">
+      <span> {{ title .AlertType }} </span>
+    </p>
+    {{ .Text }}
+  </div>
+{{ else }}
+  <blockquote>{{ .Text }}</blockquote>
+{{ end }}

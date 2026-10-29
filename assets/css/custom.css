@@ -1,0 +1,155 @@
+/* == Shared == */
+/* === Icons === */
+@import url("/css/remixicon.css");
+
+/* === Fonts === */
+@font-face {
+  font-family: 'NanumSquareRound';
+  src: url('/fonts/NanumSquareRoundL.ttf') format('truetype');
+  font-weight: 300; 
+}
+
+@font-face {
+  font-family: 'NanumSquareRound';
+  src: url('/fonts/NanumSquareRoundR.ttf') format('truetype');
+  font-weight: 400; 
+}
+
+@font-face {
+  font-family: 'NanumSquareRound';
+  src: url('/fonts/NanumSquareRoundB.ttf') format('truetype');
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: 'NanumSquareRound';
+  src: url('/fonts/NanumSquareRoundEB.ttf') format('truetype');
+  font-weight: 800;
+}
+
+@font-face {
+  font-family: 'NanumSquareRound';
+  src: url('/fonts/NanumSquareRoundEB.ttf') format('truetype');
+  font-weight: 800;
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  src: url('/fonts/OpenSans.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  src: url('/fonts/OpenSans-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+}
+
+:root {
+  --default-font-family: 'NanumSquareRound', 'Open Sans', sans-serif !important;
+}
+
+body {
+  font-family: 'NanumSquareRound', 'Open Sans', sans-serif !important;
+}
+
+.content {
+  font-family: 'NanumSquareRound', 'Open Sans', sans-serif !important;
+}
+
+/* Remove Tailwind Default Text Margins */
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+  /* Remove browser default margins completely by using 0 instead of revert */
+  margin-top: 0.7rem !important;
+  /* Set minimal bottom margin to prevent text from sticking together (change to 0 if needed) */
+  margin-bottom: 0.7rem !important;
+  /* Set default font-size */
+  font-size: revert !important;
+}
+
+.prose p,
+.prose ul,
+.prose ol,
+.prose li,
+.prose blockquote,
+.prose pre,
+.prose figure {
+  /* Remove top margin for general elements like paragraphs, and keep a consistent bottom margin */
+  margin-top: 0.5rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.prose hr {
+  margin-top: 1rem !important;
+  margin-bottom: 1rem !important;
+}
+
+/* === UI/UX === */
+/* Make Max-Width Same As Other Page Types In Articles */
+.max-w-2xl,
+.max-w-4xl,
+.max-w-6xl,
+.max-w-7xl,
+.max-w-full,
+.max-w-md {
+  max-width: revert !important;
+}
+
+/* Remove Table Headers */
+thead {
+  display: none !important;
+}
+
+/* == Navigation Bar == */
+body>main>header>nav {
+  padding: calc(var(--spacing) * 6);
+}
+
+/* ==== */
+
+/* == Front Page == */
+/* Adjust img */
+.splide__list img {
+  width: 100%;
+  max-height: 40vh;
+  object-fit: contain;
+}
+
+/* Hide arrows due to one img */
+.splide__arrows {
+  display: none;
+}
+
+.splide__track,
+img {
+  pointer-events: none;
+}
+
+/* == Basic Pages == */
+/* Resize Article Title */
+.title,
+article>header>h1 {
+  font-size: var(--text-4xl) !important;
+  line-height: var(--tw-leading, var(--text-4xl--line-height)) !important;
+  margin-bottom: calc(var(--spacing)) !important;
+}
+
+/* Resize Article Margin between header(nav) and main container(article) */
+.my-10 {
+  margin-block-start: 0 !important;
+}
+
+/* == Project Page == */
+
+/* Make Projects Page UI same as default pages */
+body>main>div.mx-auto.my-10.max-w-6xl {
+  padding: calc(var(--spacing) * 10) !important;
+  padding-bottom: 0 !important;
+}
