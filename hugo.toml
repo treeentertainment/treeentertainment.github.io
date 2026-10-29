@@ -84,12 +84,6 @@ name = "Terms"
 url = "/terms"
 weight = 5
 
-# [[menu.main]]
-# identifier = "blog"
-# name = "Blog"
-# url = "/blog"
-# weight = 5
-
 [[menu.main]]
 identifier = "contact"
 name = "Contact"

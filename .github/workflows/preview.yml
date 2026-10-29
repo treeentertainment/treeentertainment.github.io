@@ -56,10 +56,8 @@ jobs:
       - name: Build with Hugo
         env:
           HUGO_CACHEDIR: ${{ runner.temp }}/hugo_cache
-          HUGO_ENVIRONMENT: development
+          HUGO_ENVIRONMENT: production
         run: |
-          PREVIEW_URL="https://pr-${{ github.event.pull_request.number }}.treeentertainment.pages.dev"
-
           hugo \
             --gc \
             --minify \
