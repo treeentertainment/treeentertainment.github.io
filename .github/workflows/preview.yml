@@ -6,7 +6,7 @@ on:
     branches:
       - main
   workflow_dispatch:
-    
+
 permissions:
   contents: read
   pull-requests: write
@@ -58,10 +58,12 @@ jobs:
           HUGO_CACHEDIR: ${{ runner.temp }}/hugo_cache
           HUGO_ENVIRONMENT: development
         run: |
+          PREVIEW_URL="https://pr-${{ github.event.pull_request.number }}.treeentertainment.pages.dev"
+
           hugo \
             --gc \
             --minify \
-            -b "/"
+            -b "$PREVIEW_URL/"
 
       - name: Upload site artifact
         uses: actions/upload-artifact@v7

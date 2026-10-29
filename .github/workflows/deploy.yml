@@ -20,17 +20,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v7
+        uses: actions/checkout@v4
         with:
           submodules: recursive
           fetch-depth: 0
 
       - name: Setup Pages
         id: pages
-        uses: actions/configure-pages@v6
+        uses: actions/configure-pages@v4
 
       - name: Cache Hugo resources
-        uses: actions/cache@v6
+        uses: actions/cache@v4
         with:
           path: |
             ${{ runner.temp }}/hugo_cache
@@ -46,14 +46,14 @@ jobs:
           extended: true
 
       - name: Setup Node.js
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@v4
         with:
           node-version: "24"
 
       - name: Install Dependencies
         run: npm install
 
-      - name: Build with Hugo
+      - name: Build for GitHub Pages
         env:
           HUGO_CACHEDIR: ${{ runner.temp }}/hugo_cache
           HUGO_ENVIRONMENT: production
@@ -61,13 +61,32 @@ jobs:
           hugo \
             --gc \
             --minify \
-            --baseURL "${{ steps.pages.outputs.base_url }}/"
+            --baseURL "${{ steps.pages.outputs.base_url }}/" \
+            --destination public-gh
+          
+      - name: Build for Cloudflare Pages
+        env:
+          HUGO_CACHEDIR: ${{ runner.temp }}/hugo_cache
+          HUGO_ENVIRONMENT: production
+        run: |
+          hugo \
+            --gc \
+            --minify \
+            --baseURL "https://treeentertainment.pages.dev/" \
+            --destination public-cf
 
-      - name: Upload site artifact
-        uses: actions/upload-artifact@v7
+      - name: Upload GitHub site artifact
+        uses: actions/upload-artifact@v4
         with:
-          name: site-artifact
-          path: ./public
+          name: gh-site-artifact
+          path: ./public-gh
+          retention-days: 1
+
+      - name: Upload Cloudflare site artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: cf-site-artifact
+          path: ./public-cf
           retention-days: 1
 
   deploy-github-pages:
@@ -78,37 +97,36 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@v4
         with:
-          name: site-artifact
-          path: ./public
+          name: gh-site-artifact
+          path: ./public-gh
 
-      - name: Upload Artifact
-        uses: actions/upload-pages-artifact@v5
+      - name: Upload Artifact to Pages
+        uses: actions/upload-pages-artifact@v3
         with:
-          path: "./public"
+          path: "./public-gh"
 
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v5
+        uses: actions/deploy-pages@v4
 
   deploy-cloudflare-pages:
     needs: build
     environment:
       name: cloudflare-pages
-      url: ${{ steps.cf_deployment.outputs.deployment-url }}
     runs-on: ubuntu-latest
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@v4
         with:
-          name: site-artifact
-          path: ./public
+          name: cf-site-artifact
+          path: ./public-cf
 
       - name: Deploy to Cloudflare Pages
         id: cf_deployment
-        uses: cloudflare/wrangler-action@v4
+        uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy ./public --project-name=treeentertainment
+          command: pages deploy ./public-cf --project-name=treeentertainment
