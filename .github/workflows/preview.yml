@@ -1,20 +1,15 @@
 name: Preview Hugo Site
-
 on:
-  pull_request:
+  pull_request_target:
     types: [opened, synchronize, reopened, closed]
     branches:
       - main
-  workflow_dispatch:
 
 permissions:
   contents: read
-  pull-requests: write
-  deployments: write
-  id-token: write
 
 concurrency:
-  group: "pr-preview-${{ github.ref }}"
+  group: "pr-preview-${{ github.event.pull_request.number }}"
   cancel-in-progress: true
 
 jobs:
@@ -23,13 +18,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v7
+        uses: actions/checkout@v4
         with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
           submodules: recursive
           fetch-depth: 0
 
       - name: Cache Hugo resources
-        uses: actions/cache@v6
+        uses: actions/cache@v4
         with:
           path: |
             ${{ runner.temp }}/hugo_cache
@@ -46,7 +43,7 @@ jobs:
           extended: true
 
       - name: Setup Node.js
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@v4
         with:
           node-version: "24"
 
@@ -59,14 +56,13 @@ jobs:
           HUGO_ENVIRONMENT: production
         run: |
           PREVIEW_URL="https://pr-${{ github.event.pull_request.number }}.treeentertainment.pages.dev"
-
-          hugo \
-            --gc \
-            --minify \
-            -b "$PREVIEW_URL/"
+          # build for hugo_stats.json
+          hugo --gc --renderToMemory --disableKinds=RSS,sitemap,robotsTXT      
+          # build all
+          hugo --gc --minify -b "$PREVIEW_URL/"
 
       - name: Upload site artifact
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@v4
         with:
           name: site-artifact
           path: ./public
@@ -81,7 +77,7 @@ jobs:
       url: ${{ steps.cf_deployment.outputs.deployment-url }}
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@v4
         with:
           name: site-artifact
           path: ./public
@@ -107,9 +103,7 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           preCommands: |
             echo "Fetching deployments for branch: $BRANCH_NAME..."
-
-            IDS=$(npx wrangler pages deployment list --project-name treeentertainment --json | jq -r ".[] | select(.deployment_trigger.metadata.branch == \"$BRANCH_NAME\") | .id")
-
+            IDS=$(npx wrangler pages deployment list --project-name treeentertainment --json | jq -r ".[] | select(.Branch == \"$BRANCH_NAME\") | .Id")
             if [ -z "$IDS" ]; then
               echo "No deployments found for branch $BRANCH_NAME. Nothing to clean up."
             else
@@ -118,5 +112,4 @@ jobs:
                 npx wrangler pages deployment delete "$ID" --project-name treeentertainment --force
               done
             fi
-
           command: version
