@@ -49,7 +49,7 @@ meta_description = "We make Productive and User-Friendly Tools, Products and All
 meta_og_title = "TREE ENTERTAINMENT"
 meta_og_type = "website"
 meta_og_url = "https://treeentertainment.github.io"
-meta_og_image = "/img/treeentertainment_v2_banner.webp"
+meta_og_image = "https://treeentertainment.github.io/img/treeentertainment_v2_banner.webp"
 meta_og_description = "We make Productive and User-Friendly Tools, Products and All. We Handle Your Everyday Digital Life with Care"
 
 [menu]
