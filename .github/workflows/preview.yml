@@ -58,6 +58,8 @@ jobs:
           HUGO_CACHEDIR: ${{ runner.temp }}/hugo_cache
           HUGO_ENVIRONMENT: production
         run: |
+          PREVIEW_URL="https://pr-${{ github.event.pull_request.number }}.treeentertainment.pages.dev"
+
           hugo \
             --gc \
             --minify \
@@ -70,7 +72,7 @@ jobs:
           path: ./public
           retention-days: 1
 
-  deploy-cloudflare-pages-preview:
+  deploy-preview:
     if: github.event.action != 'closed'
     needs: build
     runs-on: ubuntu-latest
@@ -92,7 +94,7 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy ./public --project-name=treeentertainment --branch=pr-${{ github.event.pull_request.number }}
 
-  cleanup-preview:
+  remove-preview:
     if: github.event.action == 'closed'
     runs-on: ubuntu-latest
     steps:
