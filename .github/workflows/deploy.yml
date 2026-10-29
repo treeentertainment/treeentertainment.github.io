@@ -1,4 +1,4 @@
-name: Deploy MkDocs
+name: Production Hugo Site
 
 on:
   push:
@@ -20,26 +20,73 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v7
-
-      - name: Set up Python
-        uses: actions/setup-python@v7
+        uses: actions/checkout@v4
         with:
-          python-version: '3.x'
+          submodules: recursive
+          fetch-depth: 0
 
-      - name: Install dependencies
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v4
+
+      - name: Cache Hugo resources
+        uses: actions/cache@v4
+        with:
+          path: |
+            ${{ runner.temp }}/hugo_cache
+            resources/_gen
+          key: ${{ runner.os }}-hugo-${{ hashFiles('**/go.sum', '**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-hugo-
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: "latest"
+          extended: true
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build for GitHub Pages
+        env:
+          HUGO_CACHEDIR: ${{ runner.temp }}/hugo_cache
+          HUGO_ENVIRONMENT: production
         run: |
-          python -m pip install --upgrade pip
-          pip install mkdocs mkdocs-void mkdocs-github-admonitions-plugin
+          hugo \
+            --gc \
+            --minify \
+            --baseURL "${{ steps.pages.outputs.base_url }}/" \
+            --destination public-gh
+          
+      - name: Build for Cloudflare Pages
+        env:
+          HUGO_CACHEDIR: ${{ runner.temp }}/hugo_cache
+          HUGO_ENVIRONMENT: production
+        run: |
+          hugo \
+            --gc \
+            --minify \
+            --baseURL "https://treeentertainment.pages.dev/" \
+            --destination public-cf
 
-      - name: Build MkDocs Site
-        run: mkdocs build
-
-      - name: Upload site artifact
-        uses: actions/upload-artifact@v7
+      - name: Upload GitHub site artifact
+        uses: actions/upload-artifact@v4
         with:
-          name: mkdocs-build
-          path: ./site
+          name: gh-site-artifact
+          path: ./public-gh
+          retention-days: 1
+
+      - name: Upload Cloudflare site artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: cf-site-artifact
+          path: ./public-cf
           retention-days: 1
 
   deploy-github-pages:
@@ -50,40 +97,36 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@v4
         with:
-          name: mkdocs-build
-          path: ./site
+          name: gh-site-artifact
+          path: ./public-gh
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v6
-
-      - name: Upload Artifact
-        uses: actions/upload-pages-artifact@v5
+      - name: Upload Artifact to Pages
+        uses: actions/upload-pages-artifact@v3
         with:
-          path: './site'
+          path: "./public-gh"
 
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v5
+        uses: actions/deploy-pages@v4
 
   deploy-cloudflare-pages:
     needs: build
     environment:
       name: cloudflare-pages
-      url: ${{ steps.cf_deployment.outputs.deployment-url }}
     runs-on: ubuntu-latest
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@v4
         with:
-          name: mkdocs-build
-          path: ./site
+          name: cf-site-artifact
+          path: ./public-cf
 
       - name: Deploy to Cloudflare Pages
         id: cf_deployment
-        uses: cloudflare/wrangler-action@v4
+        uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy ./site --project-name=treeentertainment
+          command: pages deploy ./public-cf --project-name=treeentertainment

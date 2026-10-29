@@ -1,0 +1,168 @@
+baseURL = "https://treeentertainment.github.io"
+locale = "ko-KR"
+title = "TREE ENTERTAINMENT"
+author = "channel101"
+hasCJKLanguage = true
+defaultContentLanguage = 'ko'
+
+[module]
+[[module.imports]]
+path = 'github.com/opera7133/tella'
+[[module.mounts]]
+source = 'favicons'
+target = 'static'
+[[module.mounts]]
+source = 'assets'
+target = 'static'
+[[module.mounts]]
+disableWatch = true
+source = 'hugo_stats.json'
+target = 'assets/notwatching/hugo_stats.json'
+[[module.mounts]]
+source = 'content/ko'
+target = 'content'
+sites = { matrix = { languages = ['ko'] } }
+
+[params]
+googleFonts = false
+mainSections = ['']
+showBlog = false
+
+[params.icon]
+fontawesome = false
+bootstrap = false
+
+[params.logo]
+main = "/img/treeentertainment_v2.webp"
+alt = "TREE ENTERTAINMENT Logo"
+size = "h-14"
+
+[params.site]
+name = "TREE ENTERTAINMENT"
+
+[params.share]
+enable = true
+services = ["mail", "copy"]
+
+[params.homepage_meta_tags]
+meta_description = "We make Productive and User-Friendly Tools, Products and All. We Handle Your Everyday Digital Life with Care"
+meta_og_title = "TREE ENTERTAINMENT"
+meta_og_type = "website"
+meta_og_url = "https://treeentertainment.github.io"
+meta_og_image = "https://treeentertainment.github.io/img/treeentertainment_v2_banner.webp"
+meta_og_description = "We make Productive and User-Friendly Tools, Products and All. We Handle Your Everyday Digital Life with Care"
+
+[menu]
+
+[[menu.main]]
+identifier = "home"
+name = "Home"
+url = "/"
+weight = 1
+
+[[menu.main]]
+identifier = "about"
+name = "About"
+url = "/about/"
+weight = 2
+
+[[menu.main]]
+identifier = "products"
+name = "Products"
+url = "/products/"
+weight = 3
+
+[[menu.main]]
+identifier = "privacy"
+name = "Privacy"
+url = "/privacy"
+weight = 4
+
+[[menu.main]]
+identifier = "terms"
+name = "Terms"
+url = "/terms"
+weight = 5
+
+[[menu.main]]
+identifier = "contact"
+name = "Contact"
+url = "/contact"
+weight = 6
+
+[[menu.footer]]
+name = "Home"
+url = "/"
+weight = 1
+
+[[menu.footer]]
+identifier = "about"
+name = "About"
+url = "/about/"
+weight = 2
+
+[[menu.footer]]
+identifier = "contact"
+name = "Contact"
+url = "/contact"
+weight = 3
+
+[[menu.footer]]
+name = "Github"
+url = "https://github.com/treeentertainment"
+pre = "<i class='ri-github-fill'></i>"
+weight = 4
+
+[markup]
+[markup.goldmark]
+[markup.goldmark.renderer]
+unsafe = true
+
+[markup.goldmark.extensions]
+[markup.goldmark.extensions.githubAlerts]
+enable = true
+
+[markup.tableOfContents]
+endLevel = 3
+ordered = true
+startLevel = 2
+
+enableInlineShortcodes = true
+[security]
+[[server.headers]]
+for = "/**"
+[server.headers.values]
+Content-Security-Policy = "default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; img-src 'self' https: data:;"
+[security.node]
+permissions.allowRead = ["."]
+[security.exec]
+allow = [
+  '^tailwindcss$',
+  '^(dart-)?sass$',
+  '^go$',
+  '^git$',
+  '^node$',
+  '^postcss$',
+]
+
+[minify]
+disableCSS = false
+disableHTML = false
+disableJS = false
+disableJSON = false
+disableSVG = false
+disableXML = false
+minifyOutput = true
+
+[caches]
+[caches.assets]
+dir = ':resourceDir/_gen'
+maxAge = "1440h"
+
+
+[build]
+[build.buildStats]
+enable = true
+[[build.cachebusters]]
+source = 'assets/notwatching/hugo_stats\.json'
+target = 'css'

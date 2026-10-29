@@ -1,0 +1,7 @@
+/public/
+node_modules/
+assets/
+LICENSE
+*.lock
+*.svg
+package-lock.json

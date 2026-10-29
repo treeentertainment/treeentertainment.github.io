@@ -1,0 +1,17 @@
+{
+  "name": "@treeentertainment/website",
+  "private": true,
+  "license": "MIT",
+  "keywords": [],
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.3",
+    "@tailwindcss/forms": "^0.5.11",
+    "@tailwindcss/typography": "^0.5.20",
+    "del-cli": "^8.0.1",
+    "tailwindcss": "^4.3.3"
+  },
+  "scripts": {
+    "dev": "hugo server --ignoreCache --noHTTPCache --cleanDestinationDir",
+    "clean": "del-cli public .hugo_build.lock hugo_stats.json"
+  }
+}

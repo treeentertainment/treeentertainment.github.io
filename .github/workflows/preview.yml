@@ -1,0 +1,112 @@
+name: Preview Hugo Site
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: "pr-preview-${{ github.event.pull_request.number }}"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    if: github.event.action != 'closed'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
+          persist-credentials: false
+
+      - name: Cache Hugo resources
+        uses: actions/cache@v4
+        with:
+          path: |
+            ${{ runner.temp }}/hugo_cache
+            resources/_gen
+          key: ${{ runner.os }}-hugo-pr-${{ hashFiles('**/go.sum', '**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-hugo-pr-
+            ${{ runner.os }}-hugo-
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: "latest"
+          extended: true
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build with Hugo
+        env:
+          HUGO_CACHEDIR: ${{ runner.temp }}/hugo_cache
+          HUGO_ENVIRONMENT: production
+        run: |
+          PREVIEW_URL="https://pr-${{ github.event.pull_request.number }}.treeentertainment.pages.dev"
+          # build for hugo_stats.json
+          hugo --gc --renderToMemory --disableKinds=RSS,sitemap,robotsTXT      
+          # build all
+          hugo --gc --minify -b "$PREVIEW_URL/"
+
+      - name: Upload site artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-artifact
+          path: ./public
+          retention-days: 1
+
+  deploy-preview:
+    if: github.event.action != 'closed'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: pr-${{ github.event.pull_request.number }}
+      url: ${{ steps.cf_deployment.outputs.deployment-url }}
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: site-artifact
+          path: ./public
+
+      - name: Deploy Previews to Cloudflare Pages
+        id: cf_deployment
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy ./public --project-name=treeentertainment --branch=pr-${{ github.event.pull_request.number }}
+
+  remove-preview:
+    if: github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete Cloudflare Pages Deployments
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          BRANCH_NAME: pr-${{ github.event.pull_request.number }}
+        run: |
+          echo "Fetching deployments for branch: $BRANCH_NAME..."
+          IDS=$(npx --yes wrangler pages deployment list --project-name treeentertainment --json | jq -r ".[] | select(.Branch == \"$BRANCH_NAME\") | .Id")
+
+          if [ -z "$IDS" ]; then
+            echo "No deployments found for branch $BRANCH_NAME. Nothing to clean up."
+          else
+            for ID in $IDS; do
+              echo "Deleting deployment ID: $ID"
+              npx --yes wrangler pages deployment delete "$ID" --project-name treeentertainment --force
+            done
+          fi

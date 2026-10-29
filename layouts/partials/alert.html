@@ -1,0 +1,34 @@
+{{ with hugo.Data.alert }}
+  <div class="flex flex-col gap-2" data-alerts hidden>
+    {{ range . }}
+      {{ $bgColor := .color | default "bg-red-600" }}
+      <div class="{{ $bgColor }} py-2 px-4 shadow-sm" data-alert
+        {{ with .from }}data-from="{{ (time .).UnixMilli }}"{{ end }}
+        {{ with .to }}data-to="{{ (time .).UnixMilli }}"{{ end }} hidden>
+        <p class="text-base text-white">
+          {{ .detail | safeHTML }}
+        </p>
+      </div>
+    {{ end }}
+  </div>
+  <script>
+    (() => {
+      const container = document.currentScript.previousElementSibling;
+      const alerts = container.querySelectorAll('[data-alert]');
+      const updateAlerts = () => {
+        const now = Date.now();
+        let hasActiveAlerts = false;
+        alerts.forEach((alert) => {
+          const { from, to } = alert.dataset;
+          const isActive = (!from || now >= Number(from)) && (!to || now < Number(to));
+          alert.hidden = !isActive;
+          hasActiveAlerts ||= isActive;
+        });
+        container.hidden = !hasActiveAlerts;
+      };
+      updateAlerts();
+      setInterval(updateAlerts, 1000);
+      document.addEventListener('visibilitychange', updateAlerts);
+    })();
+  </script>
+{{ end }}
