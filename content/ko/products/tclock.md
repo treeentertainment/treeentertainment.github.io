@@ -8,7 +8,7 @@ links:
   - name: "Website (Legacy)"
     icon: "ri-global-line"
     link: "https://tclock.pages.dev"
-  - name: "Website (Legacy)"
+  - name: "GitHub Repository"
     icon: "ri-github-fill"
     link: "https://github.com/treeentertainment/tclock"
 ---
