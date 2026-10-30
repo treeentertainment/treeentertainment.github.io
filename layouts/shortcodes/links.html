@@ -4,7 +4,7 @@
     <div class="flex items-center gap-1 whitespace-nowrap flex-shrink-0">
         {{ if .link }}
         <a href="{{ .link }}" target="_blank" rel="noopener noreferrer"
-            class="flex items-center gap-2 px-4 py-2 border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm font-medium transition-colors no-underline hover:no-underline">
+            class="flex items-center gap-2 px-4 py-2 border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm font-medium transition-colors no-underline hover:no-underline dark:text-white">
             {{ if .icon }}<i class="{{ .icon }}"></i>{{ end }} {{ .name }}
         </a>
         {{ end }} {{ with .rawHtml }}
