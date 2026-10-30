@@ -16,6 +16,6 @@ links:
 
 > A modern, developer- and user-friendly authentication library for React Native.
 
-Explore the organization [repositories](https://github.com/orgs/react-native-auth/repositories) to view the available authentication providers.
+Explore our organization repositories to view the available authentication providers.
 
 {{< links >}}
