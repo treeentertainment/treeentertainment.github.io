@@ -18,4 +18,4 @@ links:
 
 Explore the organization [repositories](https://github.com/orgs/react-native-auth/repositories) to view the available authentication providers.
 
-<a href="https://github.com/react-native-auth">{{<icon name="ri-github-fill">}} Github Organization</a>
+{{< links >}}
