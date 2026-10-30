@@ -1,10 +1,8 @@
-<h1 align="center">TREE ENTERTAINMENT</h1>
-
 <p align="center">
  <a href="https://github.com/treeentertainment">
   <img src="assets/img/treeentertainment_v2_banner.webp"
     alt="TREE ENTERTAINMENT LOGO"
-    width="200"
+    width="300"
   />
  </a>
 </p>
