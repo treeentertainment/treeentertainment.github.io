@@ -27,7 +27,7 @@ jobs:
           persist-credentials: false
 
       - name: Cache Hugo resources
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: |
             ${{ runner.temp }}/hugo_cache
