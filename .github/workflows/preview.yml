@@ -21,7 +21,6 @@ jobs:
     if: github.event.action != 'closed'
     runs-on: ubuntu-latest
     env:
-      HUGO_CACHEDIR: ${{ runner.temp }}/hugo_cache
       HUGO_ENVIRONMENT: production
     steps:
       - name: Checkout repository
@@ -58,6 +57,8 @@ jobs:
         run: npm ci
 
       - name: Generate hugo_stats.json
+        env:
+          HUGO_CACHEDIR: ${{ runner.temp }}/hugo_cache
         run: |
           hugo \
             --gc \
@@ -65,6 +66,8 @@ jobs:
             --disableKinds=RSS,sitemap,robotsTXT
 
       - name: Build with Hugo
+        env:
+          HUGO_CACHEDIR: ${{ runner.temp }}/hugo_cache
         run: |
           PREVIEW_URL="https://pr-${{ github.event.pull_request.number }}.treeentertainment.pages.dev"
           hugo \
