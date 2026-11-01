@@ -2,7 +2,7 @@
 title: Contact Us
 ---
 
-<table>
+<table class="overflow-auto">
   <tbody>
     <tr>
       <td style="text-align: left;"><h3>{{<icon name="ri-mail-send-line">}} Email</h3></td>
