@@ -1,0 +1,22 @@
+<div class="w-full overflow-x-auto">
+  <table class="w-full min-w-full text-left border-collapse">
+    <thead>
+      {{- range .THead }}
+      <tr>
+        {{- range . }}
+        <th{{ with .Offset }} style="text-align: {{ . }}"{{ end }}>{{ .Text }}</th>
+        {{- end }}
+      </tr>
+      {{- end }}
+    </thead>
+    <tbody>
+      {{- range .TBody }}
+      <tr>
+        {{- range . }}
+        <td{{ with .Offset }} style="text-align: {{ . }}"{{ end }}>{{ .Text }}</td>
+        {{- end }}
+      </tr>
+      {{- end }}
+    </tbody>
+  </table>
+</div>
