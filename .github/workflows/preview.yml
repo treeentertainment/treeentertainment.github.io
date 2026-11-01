@@ -1,4 +1,5 @@
 name: Preview Hugo Site
+
 on:
   pull_request:
     types: [opened, synchronize, reopened, closed]
@@ -7,6 +8,9 @@ on:
 
 permissions:
   contents: read
+  deployments: write
+  pull-requests: write
+  id-token: write
 
 concurrency:
   group: "pr-preview-${{ github.event.pull_request.number }}"
@@ -16,13 +20,22 @@ jobs:
   build:
     if: github.event.action != 'closed'
     runs-on: ubuntu-latest
+    env:
+      HUGO_CACHEDIR: ${{ runner.temp }}/hugo_cache
+      HUGO_ENVIRONMENT: production
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
-          ref: ${{ github.event.pull_request.head.ref }}
+          submodules: recursive
+          fetch-depth: 0
           persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: "npm"
 
       - name: Cache Hugo resources
         uses: actions/cache@v4
@@ -41,29 +54,28 @@ jobs:
           hugo-version: "latest"
           extended: true
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "24"
-
       - name: Install Dependencies
-        run: npm install
+        run: npm ci
+
+      - name: Generate hugo_stats.json
+        run: |
+          hugo \
+            --gc \
+            --renderToMemory \
+            --disableKinds=RSS,sitemap,robotsTXT
 
       - name: Build with Hugo
-        env:
-          HUGO_CACHEDIR: ${{ runner.temp }}/hugo_cache
-          HUGO_ENVIRONMENT: production
         run: |
           PREVIEW_URL="https://pr-${{ github.event.pull_request.number }}.treeentertainment.pages.dev"
-          # build for hugo_stats.json
-          hugo --gc --renderToMemory --disableKinds=RSS,sitemap,robotsTXT      
-          # build all
-          hugo --gc --minify -b "$PREVIEW_URL/"
+          hugo \
+            --gc \
+            --minify \
+            --baseURL "$PREVIEW_URL/"
 
       - name: Upload site artifact
         uses: actions/upload-artifact@v4
         with:
-          name: site-artifact
+          name: site-artifact-pr-${{ github.event.pull_request.number }}
           path: ./public
           retention-days: 1
 
@@ -73,26 +85,32 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: pr-${{ github.event.pull_request.number }}
-      url: ${{ steps.cf_deployment.outputs.deployment-url }}
+      url: https://pr-${{ github.event.pull_request.number }}.treeentertainment.pages.dev
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          name: site-artifact
+          name: site-artifact-pr-${{ github.event.pull_request.number }}
           path: ./public
 
       - name: Deploy Previews to Cloudflare Pages
         id: cf_deployment
-        uses: cloudflare/wrangler-action@v4
+        uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy ./public --project-name=treeentertainment --branch=pr-${{ github.event.pull_request.number }}
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
 
   remove-preview:
     if: github.event.action == 'closed'
     runs-on: ubuntu-latest
     steps:
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
       - name: Delete Cloudflare Pages Deployments
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -100,13 +118,18 @@ jobs:
           BRANCH_NAME: pr-${{ github.event.pull_request.number }}
         run: |
           echo "Fetching deployments for branch: $BRANCH_NAME..."
-          IDS=$(npx --yes wrangler pages deployment list --project-name treeentertainment --json | jq -r ".[] | select(.Branch == \"$BRANCH_NAME\") | .Id")
+          DEPLOYMENTS_JSON=$(npx --yes wrangler@latest pages deployment list --project-name treeentertainment --json)
+          IDS=$(echo "$DEPLOYMENTS_JSON" | jq -r ".[] | select(.Branch == \"$BRANCH_NAME\" or .Environment == \"preview\" and .Aliases != null and (.Aliases[] | contains(\"$BRANCH_NAME\"))) | .Id" | sort -u)
+
+          if [ -z "$IDS" ]; then
+            IDS=$(echo "$DEPLOYMENTS_JSON" | jq -r ".[] | select(.Branch == \"$BRANCH_NAME\" or .branch == \"$BRANCH_NAME\") | .Id // .id")
+          fi
 
           if [ -z "$IDS" ]; then
             echo "No deployments found for branch $BRANCH_NAME. Nothing to clean up."
           else
             for ID in $IDS; do
               echo "Deleting deployment ID: $ID"
-              npx --yes wrangler pages deployment delete "$ID" --project-name treeentertainment --force
+              npx --yes wrangler@latest pages deployment delete "$ID" --project-name treeentertainment --force
             done
           fi

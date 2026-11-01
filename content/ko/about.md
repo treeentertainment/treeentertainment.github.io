@@ -4,13 +4,8 @@ title: About Us
 
 ## TREE ENTERTAINMENT
 
-{{< figure
-src="/img/treeentertainment_v2_banner.webp"
-alt="TREE ENTERTAINMENT LOGO"
-link="https://treeentertainment.github.io"
-caption=""
-class="ma0 w-75"
->}}
+<!-- prettier-ignore -->
+{{< figure src="/img/treeentertainment_v2_banner.webp" alt="TREE ENTERTAINMENT LOGO" link="https://treeentertainment.github.io" caption="" class="ma0 w-75" >}}
 
 > _"We create productive, user-friendly tools and products, handling your everyday digital life with care."_
 

@@ -5,3 +5,4 @@ LICENSE
 *.lock
 *.svg
 package-lock.json
+layouts/
