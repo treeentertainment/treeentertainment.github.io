@@ -4,7 +4,7 @@
       {{- range .THead }}
       <tr>
         {{- range . }}
-        <th{{ with .Offset }} style="text-align: {{ . }}"{{ end }}>{{ .Text }}</th>
+        <th{{ with .Alignment }} style="text-align: {{ . }}"{{ end }}>{{ .Text }}</th>
         {{- end }}
       </tr>
       {{- end }}
@@ -13,7 +13,7 @@
       {{- range .TBody }}
       <tr>
         {{- range . }}
-        <td{{ with .Offset }} style="text-align: {{ . }}"{{ end }}>{{ .Text }}</td>
+        <td{{ with .Alignment }} style="text-align: {{ . }}"{{ end }}>{{ .Text }}</td>
         {{- end }}
       </tr>
       {{- end }}
