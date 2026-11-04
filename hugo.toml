@@ -107,7 +107,7 @@ name = "About"
 url = "/about/"
 weight = 2
 
-[[menu.main]]
+[[menu.footer]]
 identifier = "products"
 name = "Products"
 url = "/products/"
