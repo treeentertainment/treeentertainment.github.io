@@ -1,4 +1,4 @@
-baseURL = "https://treeentertainment.github.io"
+# baseURL = "https://treeentertainment.github.io"
 locale = "ko-KR"
 title = "TREE ENTERTAINMENT"
 author = "channel101"
@@ -72,23 +72,29 @@ name = "Products"
 url = "/products/"
 weight = 3
 
-[[menu.main]]
-identifier = "privacy"
-name = "Privacy"
-url = "/privacy"
-weight = 4
+# [[menu.main]]
+# identifier = "privacy"
+# name = "Privacy"
+# url = "/privacy"
+# weight = 
 
-[[menu.main]]
-identifier = "terms"
-name = "Terms"
-url = "/terms"
-weight = 5
+# [[menu.main]]
+# identifier = "terms"
+# name = "Terms"
+# url = "/terms"
+# weight = 
 
 [[menu.main]]
 identifier = "contact"
 name = "Contact"
 url = "/contact"
-weight = 6
+weight = 4
+
+[[menu.main]]
+name = "Github"
+url = "https://github.com/treeentertainment"
+pre = "<i class='ri-github-fill'></i>"
+weight = 5
 
 [[menu.footer]]
 name = "Home"
@@ -101,17 +107,23 @@ name = "About"
 url = "/about/"
 weight = 2
 
+[[menu.main]]
+identifier = "products"
+name = "Products"
+url = "/products/"
+weight = 3
+
 [[menu.footer]]
 identifier = "contact"
 name = "Contact"
 url = "/contact"
-weight = 3
+weight = 4
 
 [[menu.footer]]
 name = "Github"
 url = "https://github.com/treeentertainment"
 pre = "<i class='ri-github-fill'></i>"
-weight = 4
+weight = 5
 
 [markup]
 [markup.goldmark]
