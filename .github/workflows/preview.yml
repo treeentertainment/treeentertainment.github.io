@@ -91,7 +91,7 @@ jobs:
       url: https://pr-${{ github.event.pull_request.number }}.treeentertainment.pages.dev
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: site-artifact-pr-${{ github.event.pull_request.number }}
           path: ./public
