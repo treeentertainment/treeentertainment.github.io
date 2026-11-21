@@ -17,20 +17,11 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  approve:
-    if: github.event.action != 'closed'
-    runs-on: ubuntu-latest
-    environment: pr-preview
-    steps:
-      - name: Confirm approval
-        run: echo "Approved preview deployment for PR #${{ github.event.pull_request.number }}"
-
   preview:
     if: github.event.action != 'closed'
-    needs: approve
     runs-on: ubuntu-latest
     environment:
-      name: pr-${{ github.event.pull_request.number }}
+      name: pr-preview
       url: https://pr-${{ github.event.pull_request.number }}.treeentertainment.pages.dev
     env:
       HUGO_ENVIRONMENT: production
