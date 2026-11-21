@@ -1,7 +1,7 @@
 name: Preview Hugo Site
 
 on:
-  pull_request:
+  pull_request_target:
     types: [opened, synchronize, reopened, closed]
     branches:
       - main
@@ -17,15 +17,29 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
+  approve:
     if: github.event.action != 'closed'
     runs-on: ubuntu-latest
+    environment: pr-preview
+    steps:
+      - name: Confirm approval
+        run: echo "Approved preview deployment for PR #${{ github.event.pull_request.number }}"
+
+  preview:
+    if: github.event.action != 'closed'
+    needs: approve
+    runs-on: ubuntu-latest
+    environment:
+      name: pr-${{ github.event.pull_request.number }}
+      url: https://pr-${{ github.event.pull_request.number }}.treeentertainment.pages.dev
     env:
       HUGO_ENVIRONMENT: production
     steps:
-      - name: Checkout repository
+      - name: Checkout PR commit
         uses: actions/checkout@v7
         with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.sha }}
           submodules: recursive
           fetch-depth: 0
           persist-credentials: false
@@ -74,27 +88,6 @@ jobs:
             --gc \
             --minify \
             --baseURL "$PREVIEW_URL/"
-
-      - name: Upload site artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: site-artifact-pr-${{ github.event.pull_request.number }}
-          path: ./public
-          retention-days: 1
-
-  deploy-preview:
-    if: github.event.action != 'closed'
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: pr-${{ github.event.pull_request.number }}
-      url: https://pr-${{ github.event.pull_request.number }}.treeentertainment.pages.dev
-    steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: site-artifact-pr-${{ github.event.pull_request.number }}
-          path: ./public
 
       - name: Deploy Previews to Cloudflare Pages
         id: cf_deployment
